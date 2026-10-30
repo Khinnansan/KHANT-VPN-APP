@@ -38,10 +38,10 @@ jobs:
         run: make android-apk-install-deps
 
       - name: Prepare Android build
-        run: make android-apk-prepare CHANNEL=prod
+        run: make android-apk-prepare CHANNEL=dev
 
       - name: Build KHANT VPN APK
-        run: make android-apk-release CHANNEL=prod
+        run: make android-apk-release CHANNEL=dev
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
