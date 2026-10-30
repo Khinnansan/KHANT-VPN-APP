@@ -268,8 +268,8 @@ void _connected(_Ctx x) {
   final appear = _easeOut((s - .6) / 1.4);
   final down = t.down * appear;
   final up = t.up * appear;
-  final downColor = x.p.dark ? const Color(0xFFFFB020) : const Color(0xFFF59E0B);
-  final upColor = x.p.dark ? const Color(0xFF3F7BFF) : const Color(0xFF2563EB);
+  final downColor = const Color(0xFFFFC857);
+  final upColor = const Color(0xFFFFDFA0);
 
   // the sun's yellow close to the button, the plasma's blue further out and on top, so the two
   // stay apart instead of mixing to grey
