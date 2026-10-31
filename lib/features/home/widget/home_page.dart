@@ -1,3 +1,4 @@
+
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -9,7 +10,6 @@ import 'package:hiddify/features/profile/notifier/active_profile_notifier.dart';
 import 'package:hiddify/features/profile/widget/profile_tile.dart';
 import 'package:hiddify/features/proxy/active/active_proxy_card.dart';
 import 'package:hiddify/features/proxy/active/active_proxy_delay_indicator.dart';
-import 'package:hiddify/gen/assets.gen.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
@@ -20,52 +20,45 @@ class HomePage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final t = ref.watch(translationsProvider).requireValue;
-    // final hasAnyProfile = ref.watch(hasAnyProfileProvider);
     final activeProfile = ref.watch(activeProfileProvider);
 
     return Scaffold(
       appBar: AppBar(
-        // leading: (RootScaffold.stateKey.currentState?.hasDrawer ?? false) && showDrawerButton(context)
-        //     ? DrawerButton(
-        //         onPressed: () {
-        //           RootScaffold.stateKey.currentState?.openDrawer();
-        //         },
-        //       )
-        //     : null,
         title: Row(
           children: [
-            Assets.images.logo.svg(height: 24),
+            Image.asset(
+              'assets/images/khant_vpn_icon.png',
+              height: 32,
+              width: 32,
+              fit: BoxFit.contain,
+            ),
             const Gap(8),
             Text.rich(
               TextSpan(
                 children: [
                   TextSpan(text: t.common.appTitle),
                   const TextSpan(text: " "),
-                  const WidgetSpan(child: AppVersionLabel(), alignment: PlaceholderAlignment.middle),
+                  const WidgetSpan(
+                    child: AppVersionLabel(),
+                    alignment: PlaceholderAlignment.middle,
+                  ),
                 ],
               ),
             ),
           ],
         ),
         actions: [
-          // IconButton(
-          //     onPressed: () => const QuickSettingsRoute().push(context),
-          //     icon: const Icon(FluentIcons.options_24_filled),
-          //     material: (context, platform) => MaterialIconButtonData(
-          //           tooltip: t.config.quickSettings,
-          //         )),
-          // IconButton(
-          //     onPressed: () => const AddProfileRoute().push(context),
-          //     icon: const Icon(FluentIcons.add_circle_24_filled),
-          //     material: (context, platform) => MaterialIconButtonData(
-          //           tooltip: t.profile.add.buttonText,
-          //         )),
           Semantics(
             key: const ValueKey("profile_add_button"),
             label: t.pages.profiles.add,
             child: IconButton(
-              icon: Icon(Icons.add_rounded, color: theme.colorScheme.primary),
-              onPressed: () => ref.read(bottomSheetsNotifierProvider.notifier).showAddProfile(),
+              icon: Icon(
+                Icons.add_rounded,
+                color: theme.colorScheme.primary,
+              ),
+              onPressed: () => ref
+                  .read(bottomSheetsNotifierProvider.notifier)
+                  .showAddProfile(),
             ),
           ),
           const Gap(8),
@@ -73,9 +66,6 @@ class HomePage extends HookConsumerWidget {
       ),
       body: Container(
         decoration: BoxDecoration(
-          // A sky behind the connect button, as at an eclipse: in dark mode a touch lighter round
-          // the button, fading to the theme's own dark; in light mode brightest there, a touch
-          // darker towards the edges. Both barely there, centred on where the button sits.
           gradient: theme.brightness == Brightness.dark
               ? RadialGradient(
                   center: const Alignment(0, -.15),
@@ -98,15 +88,18 @@ class HomePage extends HookConsumerWidget {
                   stops: const [0, .5, 1],
                 ),
           image: DecorationImage(
-            image: const AssetImage('assets/images/world_map.png'), // Replace with your image path
+            image: const AssetImage('assets/images/world_map.png'),
             fit: BoxFit.cover,
             opacity: 0.09,
             colorFilter: theme.brightness == Brightness.dark
-                ? ColorFilter.mode(Colors.white.withValues(alpha: .15), BlendMode.srcIn) //
+                ? ColorFilter.mode(
+                    Colors.white.withValues(alpha: .15),
+                    BlendMode.srcIn,
+                  )
                 : ColorFilter.mode(
                     Colors.grey.withValues(alpha: 1),
                     BlendMode.srcATop,
-                  ), // Apply white tint in dark mode
+                  ),
           ),
         ),
         child: Stack(
@@ -114,22 +107,20 @@ class HomePage extends HookConsumerWidget {
           children: [
             Center(
               child: ConstrainedBox(
-                constraints: const BoxConstraints(
-                  maxWidth: 600, // Set the maximum width here
-                ),
+                constraints: const BoxConstraints(maxWidth: 600),
                 child: CustomScrollView(
                   slivers: [
-                    // switch (activeProfile) {
-                    // AsyncData(value: final profile?) =>
                     MultiSliver(
                       children: [
-                        // const Gap(100),
                         switch (activeProfile) {
                           AsyncData(value: final profile?) => ProfileTile(
-                            profile: profile,
-                            isMain: true,
-                            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                          ),
+                              profile: profile,
+                              isMain: true,
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 8,
+                              ),
+                            ),
                           _ => const Text(""),
                         },
                         const SliverFillRemaining(
@@ -141,7 +132,10 @@ class HomePage extends HookConsumerWidget {
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [ConnectionButton(), ActiveProxyDelayIndicator()],
+                                  children: [
+                                    ConnectionButton(),
+                                    ActiveProxyDelayIndicator(),
+                                  ],
                                 ),
                               ),
                               ActiveProxyFooter(),
@@ -151,13 +145,6 @@ class HomePage extends HookConsumerWidget {
                         ),
                       ],
                     ),
-                    // AsyncData() => switch (hasAnyProfile) {
-                    //     AsyncData(value: true) => const EmptyActiveProfileHomeBody(),
-                    //     _ => const EmptyProfilesHomeBody(),
-                    //   },
-                    // AsyncError(:final error) => SliverErrorBodyPlaceholder(t.presentShortError(error)),
-                    // _ => const SliverToBoxAdapter(),
-                    // },
                   ],
                 ),
               ),
@@ -181,16 +168,24 @@ class HomePage extends HookConsumerWidget {
                           topLeft: Radius.circular(16),
                           topRight: Radius.circular(16),
                         ),
-                        onTap: () => ref.read(bottomSheetsNotifierProvider.notifier).showQuickSettings(),
+                        onTap: () => ref
+                            .read(bottomSheetsNotifierProvider.notifier)
+                            .showQuickSettings(),
                         child: Container(
                           height: 32,
-                          padding: const EdgeInsetsDirectional.only(start: 16, end: 8),
+                          padding: const EdgeInsetsDirectional.only(
+                            start: 16,
+                            end: 8,
+                          ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(t.pages.home.quickSettings),
                               const Gap(4),
-                              const Icon(Icons.arrow_drop_up_rounded, size: 16),
+                              const Icon(
+                                Icons.arrow_drop_up_rounded,
+                                size: 16,
+                              ),
                             ],
                           ),
                         ),
@@ -221,12 +216,20 @@ class AppVersionLabel extends HookConsumerWidget {
       label: t.common.version,
       button: false,
       child: Container(
-        decoration: BoxDecoration(color: theme.colorScheme.secondaryContainer, borderRadius: BorderRadius.circular(4)),
-        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.secondaryContainer,
+          borderRadius: BorderRadius.circular(4),
+        ),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 4,
+          vertical: 1,
+        ),
         child: Text(
           version,
           textDirection: TextDirection.ltr,
-          style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSecondaryContainer),
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: theme.colorScheme.onSecondaryContainer,
+          ),
         ),
       ),
     );
