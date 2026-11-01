@@ -40,6 +40,9 @@ jobs:
       - name: Prepare Android build
         run: make android-apk-prepare CHANNEL=dev
 
+      - name: Generate KHANT VPN Splash Screen
+        run: dart run flutter_native_splash:create
+
       - name: Build KHANT VPN APK
         run: make android-apk-release CHANNEL=dev
 
