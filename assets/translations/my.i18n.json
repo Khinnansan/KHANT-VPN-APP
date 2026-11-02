@@ -1,0 +1,829 @@
+{
+  "common": {
+    "appTitle": "KHANT VPN",
+    "start": "စတင်မည်",
+    "version": "ဗားရှင်း",
+    "ok": "အိုကေ",
+    "cancel": "မလုပ်တော့ပါ",
+    "kContinue": "ဆက်လုပ်မည်",
+    "undo": "ပြန်လုပ်မည်",
+    "showMore": "ထပ်ပြမည်",
+    "showLess": "လျှော့ပြမည်",
+    "filter": "စစ်ထုတ်ရန်",
+    "all": "အားလုံး",
+    "pause": "ခေတ္တရပ်မည်",
+    "resume": "ပြန်စမည်",
+    "clear": "ရှင်းလင်းမည်",
+    "close": "ပိတ်မည်",
+    "auto": "အလိုအလျောက်",
+    "manually": "ကိုယ်တိုင်ရွေးမည်",
+    "name": "အမည်",
+    "url": "URL",
+    "add": "ထည့်မည်",
+    "clipboard": "Clipboard",
+    "addToClipboard": "ကူးယူမည်",
+    "qrCode": "QR ကုဒ်",
+    "free": "အခမဲ့",
+    "warp": "WARP",
+    "fragment": "Fragment",
+    "help": "အကူအညီ",
+    "save": "သိမ်းမည်",
+    "update": "အပ်ဒိတ်လုပ်မည်",
+    "pin": "ပင်ထိုးမည်",
+    "unpin": "ပင်ဖြုတ်မည်",
+    "share": "မျှဝေမည်",
+    "edit": "ပြင်ဆင်မည်",
+    "delete": "ဖျက်မည်",
+    "discard": "ပယ်ဖျက်မည်",
+    "import": "တင်သွင်းမည်",
+    "export": "ထုတ်ယူမည်",
+    "later": "နောက်မှ",
+    "ignore": "လျစ်လျူရှုမည်",
+    "quit": "ထွက်မည်",
+    "notSet": "မသတ်မှတ်ရသေးပါ",
+    "hide": "ဖျောက်မည်",
+    "exit": "ထွက်မည်",
+    "reset": "မူလအတိုင်းပြန်ထားမည်",
+    "done": "ပြီးပါပြီ",
+    "decline": "ငြင်းပယ်မည်",
+    "agree": "သဘောတူသည်",
+    "empty": "ဗလာ",
+    "unknown": "မသိရှိပါ",
+    "hidden": "ဖျောက်ထားသည်",
+    "timeout": "အချိန်ကုန်သွားပါပြီ",
+    "sort": "စီစဉ်ရန်",
+    "dashboard": "ပင်မစာမျက်နှာ",
+    "disable": "ပိတ်မည်",
+    "psiphon": "Psiphon",
+    "profile": "ပရိုဖိုင်",
+    "configuration": "ဖွဲ့စည်းပုံ",
+    "file": "ဖိုင်",
+    "interval": {
+      "day": {
+        "zero": "",
+        "one": "$n ရက်",
+        "other": "$n ရက်"
+      },
+      "hour": {
+        "zero": "",
+        "one": "$n နာရီ",
+        "other": "$n နာရီ"
+      }
+    },
+    "msg": {
+      "permission": {
+        "denied": "ခွင့်ပြုချက်မရရှိပါ"
+      },
+      "export": {
+        "clipboard": {
+          "success": "ကလစ်ဘုတ်သို့ ကူးယူပြီးပါပြီ",
+          "failure": "ကူးယူ၍မရပါ",
+          "contentTooLarge": "အချက်အလက်များ များလွန်းနေပါသည်။ ဖိုင်အဖြစ် ထုတ်ယူပါ။"
+        },
+        "file": {
+          "success": "JSON ဖိုင် ဖန်တီးပြီးပါပြီ",
+          "failure": "ဖိုင်ဖန်တီး၍ မရပါ"
+        }
+      },
+      "import": {
+        "confirm": "တင်သွင်းမှုကို အတည်ပြုပါ",
+        "success": "တင်သွင်းပြီးပါပြီ",
+        "failure": "တင်သွင်း၍ မရပါ"
+      },
+      "autoSave": {
+        "success": "ပြောင်းလဲမှုများကို အလိုအလျောက် သိမ်းဆည်းပြီးပါပြီ"
+      }
+    }
+  },
+  "intro": {
+    "banner": "လုံခြုံမှု • မြန်ဆန်မှု • ကိုယ်ရေးကိုယ်တာလုံခြုံမှု",
+    "termsAndPolicyCaution(rich)": "ဆက်လက်လုပ်ဆောင်ခြင်းဖြင့် ${tap(@:pages.about.termsAndConditions)}",
+    "info(rich)": "❤️ KHANT VPN မှ ဖန်တီးထားသည်။ ${tap_source(Open source)} နှင့် ${tap_license(License)}"
+  },
+  "pages": {
+    "home": {
+      "title": "ပင်မ",
+      "quickSettings": "အမြန်ဆက်တင်များ"
+    },
+    "proxies": {
+      "title": "Proxy များ",
+      "sort": "Proxy များ စီစဉ်ရန်",
+      "testDelay": "တုံ့ပြန်ချိန် စမ်းသပ်ရန်",
+      "empty": "Proxy မရှိသေးပါ",
+      "connectToSeeProxies": "Proxy များကြည့်ရန် ချိတ်ဆက်ပါ",
+      "loadFailed": "Proxy များ ဖွင့်၍မရပါ။ ပြန်ကြိုးစားရန် နှိပ်ပါ။",
+      "activeProxy": "အသုံးပြုနေသော Proxy",
+      "unknownIp": "IP မသိရှိပါ",
+      "checkingIp": "IP စစ်ဆေးနေသည်…",
+      "switchFailed": "ဤ Proxy သို့ ပြောင်း၍မရပါ။ ပြန်ကြိုးစားပါ။",
+      "sortOptions": {
+        "unsorted": "မူလအစီအစဉ်",
+        "name": "အမည်အလိုက်",
+        "delay": "တုံ့ပြန်ချိန်အလိုက်",
+        "usage": "အသုံးပြုမှုအလိုက်"
+      },
+      "ipInfo": {
+        "address": "IP လိပ်စာ",
+        "country": "နိုင်ငံ",
+        "organization": "အဖွဲ့အစည်း"
+      },
+      "delay": {
+        "result": "တုံ့ပြန်ချိန်: ${delay}ms",
+        "timeout": "Delay test timeout",
+        "testing": "Delay: testing…"
+      }
+    },
+    "profiles": {
+      "title": "ပရိုဖိုင်များ",
+      "add": "ပရိုဖိုင်ထည့်ရန်",
+      "update": "ပရိုဖိုင်အပ်ဒိတ်လုပ်ရန်",
+      "viewAllProfiles": "ပရိုဖိုင်အားလုံးကြည့်ရန်",
+      "activeProfileName": "လက်ရှိအသုံးပြုနေသော ပရိုဖိုင်: “${name}”",
+      "nonActiveProfileName": "“${name}” ကို လက်ရှိပရိုဖိုင်အဖြစ် ရွေးချယ်ရန်",
+      "freeSubNotFound": "No free subscription found",
+      "freeSubNotFoundForRegion": "“${region}” အတွက် အခမဲ့ Subscription မတွေ့ပါ",
+      "failedToLoad": "ဖွင့်၍မရပါ",
+      "updateSubscriptions": "Update subscriptions",
+      "share": {
+        "urlToClipboard": "URL ကူးယူရန်",
+        "showUrlQr": "QR ကုဒ်ပြရန်",
+        "jsonToClipboard": "JSON ကူးယူရန်"
+      },
+      "msg": {
+        "save": {
+          "success": "ပရိုဖိုင် သိမ်းဆည်းပြီးပါပြီ"
+        },
+        "invalidUrl": "URL မှားယွင်းနေပါသည်",
+        "add": {
+          "failure": "ပရိုဖိုင်ထည့်၍ မရပါ"
+        },
+        "update": {
+          "success": "ပရိုဖိုင် အပ်ဒိတ်လုပ်ပြီးပါပြီ",
+          "failure": "ပရိုဖိုင် အပ်ဒိတ်လုပ်၍ မရပါ",
+          "failureNamed": "“${name}” ကို အပ်ဒိတ်လုပ်၍ မရပါ",
+          "bulkSuccess(plural, param=count)": {
+            "one": "$count profile updated",
+            "other": "$count profiles updated"
+          },
+          "bulkPartial": "${success} updated\n${failed} failed: ${names}"
+        },
+        "delete": {
+          "success": "ပရိုဖိုင် ဖျက်ပြီးပါပြီ"
+        }
+      }
+    },
+    "profileDetails": {
+      "title": "ပရိုဖိုင်",
+      "lastUpdate": "Last update",
+      "form": {
+        "nameHint": "ပရိုဖိုင်အမည်",
+        "emptyName": "အမည်ထည့်ရန် လိုအပ်ပါသည်",
+        "invalidUrl": "URL မှားယွင်းနေပါသည်",
+        "urlHint": "Configuration URL အပြည့်အစုံ",
+        "disableAutoUpdate": "အလိုအလျောက် အပ်ဒိတ်ပိတ်ရန်",
+        "autoUpdateInterval": "အလိုအလျောက် အပ်ဒိတ်အချိန်",
+        "loading": "ပရိုဖိုင်ထည့်သွင်းနေသည်…",
+        "adminPreference": "Administrator ခွင့်ပြုချက်",
+        "adminPreferenceAskEachTime": "အကြိမ်တိုင်း မေးရန်",
+        "adminPreferencePreferAdmin": "အမြဲ Administrator ခွင့်ပြုရန်",
+        "adminPreferencePreferNoAdmin": "Administrator ခွင့်ပြုချက်မပါဘဲ ဆက်လုပ်ရန်",
+        "adminPreferenceReset": "Ask each time about administrator permission"
+      }
+    },
+    "logs": {
+      "title": "မှတ်တမ်းများ",
+      "category": "အမျိုးအစား",
+      "level": "အဆင့်",
+      "recentLogs": "လတ်တလောမှတ်တမ်းများ",
+      "recentLogsMsg": "ဤစာမျက်နှာတွင် ပြသထားသောအချက်အလက်များ",
+      "errorLog": "App နှင့် Core မှတ်တမ်း",
+      "errorLogMsg": "Errors from both, across runs",
+      "coreLog": "Core မှတ်တမ်း",
+      "coreLogMsg": "Everything the core recorded",
+      "coreCrash": "Core ပျက်စီးမှု",
+      "coreCrashMsg": "What the core was doing when it last crashed",
+      "exportToFile": "ဖိုင်အဖြစ် ထုတ်ယူရန်",
+      "linesMatch": "$count lines match",
+      "fileSaved": "ဖိုင်သိမ်းဆည်းပြီးပါပြီ",
+      "fileSaveFailed": "ဖိုင်သိမ်းဆည်း၍ မရပါ",
+      "coreLogLevel": "Core level",
+      "coreLogLevelMsg": "Takes effect after reconnecting",
+      "buffer": "Buffer"
+    },
+    "about": {
+      "title": "အကြောင်း",
+      "notAvailableMsg": "နောက်ဆုံးဗားရှင်းကို အသုံးပြုနေပါသည်",
+      "checkForUpdate": "အပ်ဒိတ်စစ်ဆေးရန်",
+      "openWorkingDir": "အလုပ်လုပ်နေသော Folder ဖွင့်ရန်",
+      "sourceCode": "မူရင်းကုဒ်",
+      "telegramChannel": "Telegram Channel",
+      "termsAndConditions": "စည်းကမ်းချက်များ",
+      "privacyPolicy": "ကိုယ်ရေးကိုယ်တာမူဝါဒ"
+    },
+    "settings": {
+      "title": "ဆက်တင်များ",
+      "resetTunnel": "VPN ပရိုဖိုင်ကို ပြန်လည်သတ်မှတ်ရန်",
+      "options": {
+        "import": {
+          "clipboard": "Import options from clipboard",
+          "file": "Import options from file"
+        },
+        "export": {
+          "anonymousToClipboard": "Copy anonymous options to clipboard",
+          "anonymousToFile": "Export anonymous options to file",
+          "allToClipboard": "Copy all options to clipboard",
+          "allToFile": "Export all options to file"
+        },
+        "reset": "Reset options"
+      },
+      "general": {
+        "title": "အထွေထွေ",
+        "locale": "ဘာသာစကား",
+        "themeMode": "အသွင်အပြင်",
+        "themeModes": {
+          "system": "စနစ်မူလအတိုင်း",
+          "dark": "အမှောင်ပုံစံ",
+          "light": "အလင်းပုံစံ",
+          "black": "အနက်ရောင်ပုံစံ"
+        },
+        "enableAnalytics": "အသုံးပြုမှုဆိုင်ရာ အချက်အလက်ပေးပို့ရန်",
+        "enableAnalyticsMsg": "Send analytics and crash reports from your device to help improve the app",
+        "autoIpCheck": "Automatically check connection IP",
+        "dynamicNotification": "Display speed in notification",
+        "hapticFeedback": "Haptic feedback",
+        "alwaysOnVpn": "အမြဲဖွင့်ထားသော VPN",
+        "actionAtClosing": "When closing the window",
+        "autoStart": "Start at login",
+        "silentStart": "Start minimized",
+        "ignoreBatteryOptimizations": "Turn off battery optimization",
+        "ignoreBatteryOptimizationsMsg": "Remove restrictions for optimal VPN performance",
+        "memoryLimit": "Memory limit",
+        "memoryLimitMsg": "Turn on if you’re experiencing out-of-memory errors or frequent app crashes",
+        "connectionTestUrl": "Connection test URL",
+        "urlTestInterval": "URL test interval",
+        "clashApiPort": "Clash API port",
+        "useXrayCoreWhenPossible": "Use xray-core when possible",
+        "useXrayCoreWhenPossibleMsg": "Use xray-core when parsing subscription links. Reimport the subscription to turn this on."
+      },
+      "routing": {
+        "title": "လမ်းကြောင်းသတ်မှတ်ခြင်း",
+        "routeRule": {
+          "add": "စည်းမျဉ်းထည့်ရန်",
+          "delete": "စည်းမျဉ်းဖျက်ရန်",
+          "options": {
+            "import": {
+              "clipboard": "Import rules from clipboard",
+              "file": "Import rules from file"
+            },
+            "export": {
+              "clipboard": "Copy rules to clipboard",
+              "file": "Save rules to file"
+            },
+            "reset": "Reset to default rules"
+          },
+          "rule": {
+            "title": "စည်းမျဉ်း",
+            "onlyTunMode": "TUN Mode တွင်သာ အသုံးပြုနိုင်သည်",
+            "notAvailableInThisPlatform": "Not available on this platform",
+            "canNotBeEmpty": "ဗလာမဖြစ်ရပါ",
+            "validUrlEx": "https://example.com",
+            "validUrl": "Valid “URL” like\n@:pages.settings.routing.routeRule.rule.validUrlEx",
+            "validProcessNameEx": "Chrome.exe or google chrome or chrome",
+            "validProcessName": "Valid “Process name” like\n@:pages.settings.routing.routeRule.rule.validProcessNameEx",
+            "validProcessPathEx": "C:\\Pro...\\chrome.exe\n/App.../Google Chrome\n/usr/lib.../chrome",
+            "validProcessPath": "Valid “Process path” like\n@:pages.settings.routing.routeRule.rule.validProcessPathEx",
+            "validPortRangeEx": "80 or 1:65000",
+            "validPortRange": "Valid “Port” or “Port range” like\n@:pages.settings.routing.routeRule.rule.validPortRangeEx",
+            "validIpCidrEx": "8.8.8.8, 10.0.0.0/24, or fd00::/8",
+            "validIpCidr": "Valid IP CIDR like\n@:pages.settings.routing.routeRule.rule.validIpCidrEx",
+            "validDomainEx": "Google.com or dl.google.com",
+            "validDomain": "Valid “Domain” like\n@:pages.settings.routing.routeRule.rule.validDomainEx",
+            "validDomainSuffixEx": ".com or .ir",
+            "validDomainSuffix": "Valid “Domain suffix” like\n@:pages.settings.routing.routeRule.rule.validDomainSuffixEx",
+            "tileTitle(map)": {
+              "name": "အမည်",
+              "outbound": "Outbound if match",
+              "rule_set": "Rule set URL",
+              "package_name": "Package names",
+              "process_name": "Process names",
+              "process_path": "Process paths",
+              "network": "ကွန်ရက်များ",
+              "port_range": "Destination ports",
+              "source_port_range": "Source ports",
+              "protocol": "Protocol",
+              "ip_cidr": "Destination IP CIDR",
+              "source_ip_cidr": "Source IP CIDR",
+              "domain": "Domain",
+              "domain_suffixe": "Domain suffix",
+              "domain_keyword": "Domain keyword",
+              "domain_regex": "Domain regex"
+            },
+            "outbound(map)": {
+              "proxy": "Proxy",
+              "direct": "တိုက်ရိုက်",
+              "direct_with_fragment": "Direct with fragment",
+              "block": "ပိတ်ဆို့ရန်"
+            },
+            "network(map)": {
+              "all": "အားလုံး",
+              "tcp": "TCP",
+              "udp": "UDP"
+            },
+            "protocol(map)": {
+              "": "အားလုံး",
+              "tls": "TLS",
+              "http": "HTTP",
+              "quic": "QUIC",
+              "stun": "STUN",
+              "dns": "DNS",
+              "bittorrent": "BitTorrent"
+            }
+          },
+          "genericList": {
+            "addNew": "Add new value",
+            "update": "Update value",
+            "clearList": "Clear list",
+            "clearListMsg": "All items will be deleted"
+          }
+        },
+        "builtinRules": {
+          "tag": "Built-in",
+          "bypassLan": "Bypass LAN",
+          "blockAds": "Block ads and malware",
+          "bypassRegion": "Bypass sites in $region"
+        },
+        "appBasedRouting": {
+          "title": "App-based routing",
+          "hideSysApps": "Hide system apps",
+          "listTitle": {
+            "bypass": "Bypassed apps",
+            "proxy": "Proxied apps"
+          },
+          "chooseApps": "Choose apps",
+          "apps": {
+            "one": "app",
+            "other": "apps"
+          },
+          "moreApps": {
+            "one": "+$n app",
+            "other": "+$n apps"
+          },
+          "autoTag": "အလိုအလျောက်",
+          "outsideVpn": "Outside the VPN",
+          "ruleWontApply": "Outside the VPN · rule won’t apply",
+          "notInstalled": "Not installed",
+          "share": {
+            "invite": "Help improve auto selection",
+            "removed": {
+              "one": "$n removed",
+              "other": "$n removed"
+            },
+            "added": {
+              "one": "$n added",
+              "other": "$n added"
+            },
+            "title": "Share your changes",
+            "where": "Opens a public issue on GitHub, already filled in with these app names. To share them, submit it there. You need a GitHub account.",
+            "action": "Continue on GitHub"
+          },
+          "options": {
+            "import": {
+              "clipboard": "Import selection from clipboard",
+              "file": "Import selection from file",
+              "msg": "Importing replaces your current selections. Continue?"
+            },
+            "export": {
+              "clipboard": "Copy selection to clipboard",
+              "file": "Export selection to file"
+            },
+            "clearAllSelections": "Clear all selections"
+          },
+          "modes": {
+            "proxy": "Proxy only",
+            "bypass": "Bypass"
+          },
+          "autoSelection": {
+            "title": "Auto selection based on $region",
+            "performNow": "ယခုပင် အပ်ဒိတ်လုပ်ရန်",
+            "updated": {
+              "zero": "Updated today",
+              "one": "Updated $n day ago",
+              "other": "Updated $n days ago"
+            },
+            "noList": "No list for this region",
+            "loadFailed": "Couldn’t load the list",
+            "restore": {
+              "one": "Restore $n auto pick",
+              "other": "Restore $n auto picks"
+            },
+            "restored": {
+              "one": "$n auto pick restored",
+              "other": "$n auto picks restored"
+            }
+          }
+        },
+        "region": "ဒေသ",
+        "regions": {
+          "ir": "အီရန် (ir)",
+          "cn": "တရုတ် (cn)",
+          "ru": "ရုရှား (ru)",
+          "af": "အာဖဂန်နစ္စတန် (af)",
+          "id": "အင်ဒိုနီးရှား (id)",
+          "tr": "တူရကီ (tr)",
+          "br": "ဘရာဇီး (br)",
+          "other": "အခြား"
+        },
+        "balancerStrategy": {
+          "title": "Balancer strategy",
+          "roundRobin": "Round robin",
+          "consistentHash": "Consistent hash",
+          "stickySession": "Sticky session",
+          "roundRobinDescription": "Each connection uses the next server, so sites may see your IP change",
+          "consistentHashDescription": "Each site always uses the same server",
+          "stickySessionDescription": "Each site keeps a random server until you reconnect"
+        },
+        "resolveDestination": "Resolve destination",
+        "ipv6Route": "IPv6 route",
+        "ipv6Modes": {
+          "disable": "Off",
+          "enable": "On",
+          "prefer": "Preferred",
+          "only": "Exclusive"
+        }
+      },
+      "dns": {
+        "title": "DNS",
+        "remoteDns": "Remote DNS",
+        "remoteDnsDomainStrategy": "Remote DNS domain strategy",
+        "directDns": "Outbound server resolver (direct)",
+        "directDnsDomainStrategy": "Outbound domain strategy",
+        "enableFakeDns": "Turn on fake DNS",
+        "domainStrategy": {
+          "auto": "အလိုအလျောက်",
+          "preferIpv6": "Prefer IPv6",
+          "preferIpv4": "Prefer IPv4",
+          "ipv4Only": "IPv4 only",
+          "ipv6Only": "IPv6 only"
+        }
+      },
+      "inbound": {
+        "title": "အဝင်ချိတ်ဆက်မှု",
+        "serviceMode": "ဝန်ဆောင်မှုပုံစံ",
+        "serviceModes": {
+          "proxy": "Proxy ဝန်ဆောင်မှုသာ",
+          "systemProxy": "System Proxy သတ်မှတ်ရန်",
+          "tun": "VPN"
+        },
+        "shortServiceModes": {
+          "proxy": "Proxy",
+          "systemProxy": "System proxy",
+          "tun": "VPN"
+        },
+        "strictRoute": "တင်းကျပ်သော လမ်းကြောင်း",
+        "tunImplementation": "TUN implementation",
+        "tunImplementations": {
+          "mixed": "ရောနှော",
+          "system": "စနစ်",
+          "gvisor": "gVisor"
+        },
+        "mixedPort": "Mixed port",
+        "tproxyPort": "Transparent proxy port",
+        "directPort": "Direct port",
+        "redirectPort": "Redirect port",
+        "lanSharing": "Secure VPN sharing",
+        "qrCode": "QR ကုဒ်",
+        "lanQrSubtitle": "SOCKS5 proxy"
+      },
+      "tlsTricks": {
+        "title": "TLS နည်းလမ်းများ",
+        "enable": "Fragment ဖွင့်ရန်",
+        "packets": "Fragment ခွဲခြားမှုအရေအတွက်",
+        "packetsTlsHello": "TLS Hello",
+        "packets1_1": "1-1",
+        "packets1_2": "1-2",
+        "packets1_3": "1-3",
+        "packets1_4": "1-4",
+        "packets1_5": "1-5",
+        "size": "Fragment အရွယ်အစား",
+        "sleep": "Fragment ခဏနားချိန်",
+        "mixedSniCase": {
+          "enable": "Turn on mixed SNI case"
+        },
+        "padding": {
+          "enable": "Turn on padding",
+          "size": "Padding size"
+        }
+      },
+      "chain": {
+        "title": "ချိတ်ဆက်မှုအဆင့်ဆင့်",
+        "subtitle": "အပိုလုံခြုံရေးနှင့် ကန့်သတ်ချက်ကျော်ဖြတ်မှု",
+        "finalIp": "နောက်ဆုံး IP",
+        "levels": {
+          "app": {
+            "title": "အက်ပ်",
+            "msg": "Start point: Your app traffic enters the chain here and passes through the next layers to prepare for the final bypass"
+          },
+          "extraSecurity": {
+            "title": "အပိုလုံခြုံရေး",
+            "msg": "Adds an extra shield to keep your data private, even if your main profile is untrusted"
+          },
+          "mainProfile": {
+            "title": "အဓိက ပရိုဖိုင်"
+          },
+          "unblocker": {
+            "title": "ကန့်သတ်ချက်ကျော်ဖြတ်စနစ်",
+            "msg": "Helps bypass network restrictions. If the helper connects, your main profile can still work even if it’s currently blocked."
+          },
+          "filtering": {
+            "title": "စစ်ထုတ်ခြင်း",
+            "msg": "Final exit: Your traffic passes through the active layers, which can be Extra security, Main profile, or Unblocker. Once their effects are applied, it is routed to bypass local network filtering."
+          }
+        },
+        "warp": {
+          "missingConfig": "Missing WARP config",
+          "licenseKey": "လိုင်စင်ကီး",
+          "cleanIp": "Clean IP",
+          "port": "Port",
+          "noise": {
+            "count": "Noise count",
+            "mode": "Noise mode",
+            "size": "Noise size",
+            "delay": "Noise delay"
+          }
+        },
+        "psiphon": {
+          "selectServerRegion": "ဆာဗာဒေသရွေးချယ်ရန်",
+          "regions": {
+            "auto": "@:common.auto",
+            "at": "Austria (at)",
+            "au": "Australia (au)",
+            "be": "Belgium (be)",
+            "bg": "Bulgaria (bg)",
+            "ca": "Canada (ca)",
+            "ch": "Switzerland (ch)",
+            "cz": "Czech Republic (cz)",
+            "de": "Germany (de)",
+            "dk": "Denmark (dk)",
+            "ee": "Estonia (ee)",
+            "es": "Spain (es)",
+            "fi": "Finland (fi)",
+            "fr": "France (fr)",
+            "gb": "United Kingdom (gb)",
+            "hr": "Croatia (hr)",
+            "hu": "Hungary (hu)",
+            "ie": "Ireland (ie)",
+            "in": "India (in)",
+            "it": "Italy (it)",
+            "jp": "Japan (jp)",
+            "lv": "Latvia (lv)",
+            "nl": "Netherlands (nl)",
+            "no": "Norway (no)",
+            "pl": "Poland (pl)",
+            "pt": "Portugal (pt)",
+            "ro": "Romania (ro)",
+            "rs": "Serbia (rs)",
+            "se": "Sweden (se)",
+            "sg": "Singapore (sg)",
+            "sk": "Slovakia (sk)",
+            "us": "United States (us)"
+          }
+        },
+        "profile": {
+          "selectProfile": "Select profile",
+          "conduitPairingId": "Conduit pairing ID"
+        }
+      }
+    }
+  },
+  "components": {
+    "stats": {
+      "connection": "ချိတ်ဆက်မှု",
+      "traffic": "ဒေတာအသုံးပြုမှု",
+      "trafficLive": "လက်ရှိဒေတာအသုံးပြုမှု",
+      "trafficTotal": "စုစုပေါင်းဒေတာ",
+      "uplink": "အပ်လုဒ်",
+      "downlink": "ဒေါင်းလုဒ်",
+      "speed": "အမြန်နှုန်း",
+      "totalTransferred": "စုစုပေါင်းလွှဲပြောင်းထားမှု"
+    },
+    "subscriptionInfo": {
+      "upload": "အပ်လုဒ်",
+      "download": "ဒေါင်းလုဒ်",
+      "total": "စုစုပေါင်းဒေတာ",
+      "expireDate": "သက်တမ်းကုန်ဆုံးရက်",
+      "expired": "သက်တမ်းကုန်ဆုံးပြီး",
+      "noTraffic": "ဒေတာပမာဏကုန်ဆုံးသွားပါပြီ",
+      "remainingDuration(plural, param=days)": {
+        "one": "$days day remaining",
+        "other": "$days days remaining"
+      },
+      "remainingUnlimited": "အကန့်အသတ်မရှိ",
+      "remainingTrafficSemanticLabel": "${consumed} of ${total} traffic consumed",
+      "remainingTraffic": "ကျန်ရှိသောဒေတာ",
+      "openWebPage": "ဝက်ဘ်စာမျက်နှာဖွင့်ရန်",
+      "support": "အကူအညီ",
+      "openLinkTitle": "ဤလင့်ခ်ကို ဖွင့်မလား။",
+      "openLinkAction": "ဖွင့်မည်"
+    }
+  },
+  "dialogs": {
+    "sortProfiles": {
+      "title": "စီစဉ်ရန်",
+      "sort": {
+        "name": "အမည်အလိုက်",
+        "lastUpdate": "မကြာသေးမီက အပ်ဒိတ်လုပ်ထားသည်"
+      },
+      "direction": {
+        "newestFirst": "အသစ်ဆုံးကို အရင်ပြရန်",
+        "oldestFirst": "အဟောင်းဆုံးကို အရင်ပြရန်"
+      }
+    },
+    "warpLicense": {
+      "title": "Cloudflare WARP consent",
+      "description(rich)": "Cloudflare WARP is a free WireGuard VPN provider. By turning this on you agree to Cloudflare WARP’s ${tos(Terms of service)} and ${privacy(Privacy policy)}."
+    },
+    "psiphonLicense": {
+      "title": "Psiphon license agreement",
+      "description(rich)": "By using Psiphon, you agree to the ${tos(Terms of service)} and acknowledge the ${privacy(Privacy policy)}. Read them carefully before you continue."
+    },
+    "newVersion": {
+      "title": "အပ်ဒိတ်အသစ် ရရှိပါပြီ",
+      "msg": "@:common.appTitle ဗားရှင်းအသစ် ရရှိပါပြီ။ ယခုပင် အပ်ဒိတ်လုပ်မလား။",
+      "currentVersion": "လက်ရှိဗားရှင်း",
+      "newVersion": "ဗားရှင်းအသစ်",
+      "updateNow": "ယခုပင် အပ်ဒိတ်လုပ်ရန်"
+    },
+    "confirmation": {
+      "settings": {
+        "import": {
+          "msg": "This overwrites all configuration options with the imported values. Continue?"
+        }
+      },
+      "profile": {
+        "delete": {
+          "title": "ပရိုဖိုင်ဖျက်ရန်",
+          "msg": "Delete this profile? You can’t undo this."
+        }
+      },
+      "appList": {
+        "import": {
+          "msg": "This replaces your Bypass and Proxy only apps. Continue?"
+        }
+      },
+      "routeRule": {
+        "delete": {
+          "title": "စည်းမျဉ်းဖျက်ရန်",
+          "msg": "Delete the “$rulename” rule? You can’t undo this."
+        }
+      },
+      "addProfileByDeepLinkWarning": {
+        "title": "Add profile?",
+        "message": "An external link from “${host}” wants to add a new profile. Import it?"
+      },
+      "importRouteRuleByDeepLinkWarning": {
+        "title": "Import route rule?",
+        "message": "Route rules decide where your traffic goes.\nOnly import them from a source you trust."
+      }
+    },
+    "adminBgService": {
+      "vpnNeedsAdmin": {
+        "title": "Administrator permission needed",
+        "msg": "VPN mode needs a one-time administrator permission to install the KHANT VPN နောက်ကွယ်ဝန်ဆောင်မှု. After that, you can connect without another prompt.",
+        "connectWithAdmin": "Connect with admin permission",
+        "waitingTitle": "Waiting for administrator permission",
+        "waitingMsg": "Allow the administrator prompt to continue. You can stop and try again later.",
+        "stop": "Stop"
+      },
+      "proxyNeedsAdmin": {
+        "title": "Administrator permission recommended",
+        "msg": "Some settings in this profile work better with administrator permission. You can run with admin permission, or continue without it (those settings will be turned off for this connection).",
+        "seeConfigs": "See configs",
+        "hideConfigs": "Hide configs",
+        "neverAskAgain": "Don’t ask again for this profile",
+        "runAsAdmin": "Run as admin",
+        "continueWithoutAdmin": "Continue without admin",
+        "elevationFailedTitle": "Couldn’t get administrator permission",
+        "elevationFailedMsg": "The administrator prompt was denied or failed. Try again, or continue without admin for this connection.",
+        "tryAgain": "Try again"
+      }
+    },
+    "experimentalNotice": {
+      "title": "Experimental features in use",
+      "msg": "You’ve turned on some experimental features that might affect connection quality and cause unexpected errors. You can always change or reset these options in Settings.",
+      "disable": "Don’t show again"
+    },
+    "noActiveProfile": {
+      "title": "ပရိုဖိုင်ရွေးချယ်ပါ",
+      "msg": "Let’s get started. Add a connection profile with your VPN server details.\n\nNo server yet? No problem. The guide below shows how to set one up for free.",
+      "helpBtn": {
+        "label": "အသုံးပြုပုံပြပါ",
+        "url": "https://hiddify.com/manager/"
+      }
+    },
+    "unknownDomainsWarning": {
+      "title": "ဤလင့်ခ်ကို အရင်စစ်ဆေးပါ",
+      "cannotVerify": "ဤလင့်ခ်ကို အတည်မပြုနိုင်ပါ",
+      "avoidIfUnsure": "If you’re not fully sure, do not pay or share sensitive information",
+      "ownResponsibility": "You continue at your own risk",
+      "open": "ဖွင့်မည်",
+      "openIn": "ဖွင့်ရန် (${seconds})"
+    },
+    "proxyInfo": {
+      "fullTag": "Tag အပြည့်အစုံ",
+      "type": "အမျိုးအစား",
+      "testTime": "စမ်းသပ်ချိန်",
+      "testDelay": "တုံ့ပြန်ချိန် စမ်းသပ်ရန်",
+      "isSelected": "ရွေးချယ်ထားသည်",
+      "isGroup": "အုပ်စု",
+      "isSecure": "လုံခြုံသည်",
+      "port": "Port",
+      "host": "Host",
+      "ip": "IP",
+      "countryCode": "Country code",
+      "region": "ဒေသ",
+      "city": "မြို့",
+      "asn": "ASN",
+      "organization": "အဖွဲ့အစည်း",
+      "location": "တည်နေရာ",
+      "postalCode": "စာတိုက်သင်္ကေတ",
+      "download": "ဒေါင်းလုဒ်",
+      "upload": "အပ်လုဒ်"
+    },
+    "windowClosing": {
+      "askEachTime": "အကြိမ်တိုင်း မေးရန်",
+      "alertMessage": "App ကို ဖျောက်မလား၊ ပိတ်ထွက်မလား။",
+      "remember": "ဤရွေးချယ်မှုကို မှတ်ထားရန်"
+    },
+    "qrCode": {
+      "copyFullLink": "Copy full link",
+      "copied": "ကူးယူပြီးပါပြီ",
+      "localOnlyTitle": "ဤစက်တွင်သာ",
+      "localOnlyMessage": "Other devices can’t reach 127.0.0.1",
+      "ip": "IP",
+      "port": "Port",
+      "username": "Username",
+      "password": "Password",
+      "showPassword": "စကားဝှက်ပြရန်",
+      "hidePassword": "စကားဝှက်ဖျောက်ရန်"
+    },
+    "qrScanner": {
+      "notFound": "ဤပုံတွင် QR ကုဒ်မတွေ့ပါ"
+    }
+  },
+  "connection": {
+    "tapToConnect": "ချိတ်ဆက်ရန် နှိပ်ပါ",
+    "connect": "ချိတ်ဆက်မည်",
+    "connecting": "ချိတ်ဆက်နေသည်…",
+    "waiting": "ချိတ်ဆက်ရန် ရှာဖွေနေသည်…",
+    "noAvailableProxies": "ချိတ်ဆက်မှု မအောင်မြင်ပါ",
+    "hotReloading": "ပြောင်းလဲမှုများ အသုံးပြုနေသည်…",
+    "connected": "ချိတ်ဆက်ပြီးပါပြီ",
+    "disconnect": "ချိတ်ဆက်မှုဖြတ်မည်",
+    "disconnecting": "ချိတ်ဆက်မှု ဖြတ်နေသည်…",
+    "failed": "ချိတ်ဆက်၍ မရပါ",
+    "tapToRetry": "ထပ်မံကြိုးစားရန် နှိပ်ပါ",
+    "errorDetails": "အမှားအသေးစိတ်",
+    "reconnect": "ပြန်လည်ချိတ်ဆက်မည်",
+    "reconnectMsg": "Reconnecting to apply changes…"
+  },
+  "errors": {
+    "unexpected": "မမျှော်လင့်ထားသော အမှားဖြစ်ပွားပါသည်",
+    "connection": {
+      "unexpected": "မမျှော်လင့်ထားသော ချိတ်ဆက်မှုအမှား",
+      "timeout": "ချိတ်ဆက်မှု အချိန်ကုန်သွားပါပြီ",
+      "badResponse": "ဆာဗာတုံ့ပြန်ချက် မှားယွင်းနေပါသည်",
+      "connectionError": "ချိတ်ဆက်မှုအမှား",
+      "badCertificate": "Certificate မှားယွင်းနေပါသည်"
+    },
+    "profiles": {
+      "unexpected": "မမျှော်လင့်ထားသော အမှားဖြစ်ပွားပါသည်",
+      "notFound": "ပရိုဖိုင်မတွေ့ပါ",
+      "invalidConfig": "ဖွဲ့စည်းပုံ မှားယွင်းနေပါသည်",
+      "invalidUrl": "URL မှားယွင်းနေပါသည်",
+      "canceledByUser": "အသုံးပြုသူမှ ပယ်ဖျက်လိုက်သည်"
+    },
+    "connectivity": {
+      "unexpected": "မမျှော်လင့်ထားသော ချို့ယွင်းမှု",
+      "missingVpnPermission": "VPN ခွင့်ပြုချက်မရှိပါ",
+      "missingNotificationPermission": "အသိပေးချက်ခွင့်ပြုချက်မရှိပါ",
+      "core": "Core အမှား"
+    },
+    "singbox": {
+      "serviceNotRunning": "ဝန်ဆောင်မှု အလုပ်မလုပ်နေပါ",
+      "missingPrivilege": "လိုအပ်သော ခွင့်ပြုချက်မရှိပါ",
+      "missingPrivilegeMsg": "VPN mode can’t start. Relaunch the app as administrator or change service mode.",
+      "tunAddressInUse": "အခြား VPN တစ်ခု ဖွင့်ထားပါသည်",
+      "tunAddressInUseMsg": "VPN mode can’t start. Turn off the other VPN or change service mode.",
+      "invalidConfigOptions": "Configuration ရွေးချယ်မှုများ မှားယွင်းနေပါသည်",
+      "invalidConfig": "ဖွဲ့စည်းပုံ မှားယွင်းနေပါသည်"
+    },
+    "warp": {
+      "missingLicense": "WARP လိုင်စင်လိုအပ်ပါသည်",
+      "missingLicenseMsg": "This profile uses WARP. Accept the WARP license to continue."
+    },
+    "psiphon": {
+      "missingLicense": "Psiphon လိုင်စင်လိုအပ်ပါသည်",
+      "missingLicenseMsg": "This profile uses Psiphon. Accept the Psiphon license to continue."
+    }
+  }
+}
