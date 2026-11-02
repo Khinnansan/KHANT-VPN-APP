@@ -1,6 +1,6 @@
 {
   "common": {
-    "appTitle": "Hiddify",
+    "appTitle": "KHANT VPN",
     "start": "Start",
     "version": "Version",
     "ok": "OK",
@@ -96,7 +96,7 @@
     }
   },
   "intro": {
-    "banner": "All you need for an unrestricted internet",
+    "banner": "Secure • Fast • Private",
     "termsAndPolicyCaution(rich)": "By continuing you agree to ${tap(@:pages.about.termsAndConditions)}",
     "info(rich)": "Made with ❤️ by Hiddify. ${tap_source(Open source)} and ${tap_license(License)}"
   },
