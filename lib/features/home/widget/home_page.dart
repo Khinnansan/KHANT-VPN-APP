@@ -36,7 +36,7 @@ class HomePage extends HookConsumerWidget {
             Text.rich(
               TextSpan(
                 children: [
-                  TextSpan(text: t.common.appTitle),
+                  const TextSpan(text: "KHANT VPN"),
                   const TextSpan(text: " "),
                   const WidgetSpan(
                     child: AppVersionLabel(),
