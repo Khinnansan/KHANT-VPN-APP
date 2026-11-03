@@ -241,12 +241,38 @@ jobs:
 
       - name: Setup Android Signing Properties
         if: ${{ inputs.upload-artifact && startsWith(matrix.platform,'android') }}
+        env:
+          ANDROID_SIGNING_KEY: ${{ secrets.ANDROID_SIGNING_KEY }}
+          ANDROID_SIGNING_STORE_PASSWORD: ${{ secrets.ANDROID_SIGNING_STORE_PASSWORD }}
+          ANDROID_SIGNING_KEY_PASSWORD: ${{ secrets.ANDROID_SIGNING_KEY_PASSWORD }}
+          ANDROID_SIGNING_KEY_ALIAS: ${{ secrets.ANDROID_SIGNING_KEY_ALIAS }}
+        shell: bash
         run: |
-          echo "${{ secrets.ANDROID_SIGNING_KEY }}" | base64 --decode > android/key.jks
-          echo "storeFile=$(pwd)/android/key.jks" > android/key.properties
-          echo "storePassword=${{ secrets.ANDROID_SIGNING_STORE_PASSWORD }}" >> android/key.properties
-          echo "keyPassword=${{ secrets.ANDROID_SIGNING_KEY_PASSWORD }}" >> android/key.properties
-          echo "keyAlias=${{ secrets.ANDROID_SIGNING_KEY_ALIAS }}" >> android/key.properties
+          set -euo pipefail
+
+          if [[ -z "$ANDROID_SIGNING_KEY" || \
+                -z "$ANDROID_SIGNING_STORE_PASSWORD" || \
+                -z "$ANDROID_SIGNING_KEY_PASSWORD" || \
+                -z "$ANDROID_SIGNING_KEY_ALIAS" ]]; then
+            echo "::warning::Android signing secrets are incomplete. Using fallback signing configuration."
+            exit 0
+          fi
+
+          printf '%s' "$ANDROID_SIGNING_KEY" | base64 --decode > android/key.jks
+
+          keytool -list \
+            -keystore android/key.jks \
+            -storepass "$ANDROID_SIGNING_STORE_PASSWORD" \
+            -alias "$ANDROID_SIGNING_KEY_ALIAS" > /dev/null
+
+          {
+            printf 'storeFile=%s/android/key.jks\n' "$GITHUB_WORKSPACE"
+            printf 'storePassword=%s\n' "$ANDROID_SIGNING_STORE_PASSWORD"
+            printf 'keyPassword=%s\n' "$ANDROID_SIGNING_KEY_PASSWORD"
+            printf 'keyAlias=%s\n' "$ANDROID_SIGNING_KEY_ALIAS"
+          } > android/key.properties
+
+          echo "Android signing keystore validated successfully."
 
       # Windows code signing. A publicly trusted certificate is what keeps the
       # Go/Flutter binaries off the VirusTotal "trojan" heuristics; see
