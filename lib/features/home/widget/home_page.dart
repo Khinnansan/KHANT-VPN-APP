@@ -13,134 +13,282 @@ import 'package:hiddify/features/proxy/active/active_proxy_delay_indicator.dart'
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
+const Color _gold = Color(0xFFD6AD55);
+const Color _goldLight = Color(0xFFF3D991);
+const Color _darkBackground = Color(0xFF080808);
+const Color _cardBackground = Color(0xFF15130F);
+
 class HomePage extends HookConsumerWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
     final t = ref.watch(translationsProvider).requireValue;
     final activeProfile = ref.watch(activeProfileProvider);
+    final hasProfile = ref.watch(hasAnyProfileProvider).value ?? false;
 
     return Scaffold(
+      backgroundColor: _darkBackground,
       appBar: AppBar(
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        backgroundColor: _darkBackground,
+        surfaceTintColor: Colors.transparent,
+        titleSpacing: 18,
         title: Row(
           children: [
-            Image.asset(
-              'assets/images/khant_vpn_icon.png',
-              height: 32,
-              width: 32,
-              fit: BoxFit.contain,
-            ),
-            const Gap(8),
-            Text.rich(
-              TextSpan(
-                children: [
-                  const TextSpan(text: "KHANT VPN"),
-                  const TextSpan(text: " "),
-                  const WidgetSpan(
-                    child: AppVersionLabel(),
-                    alignment: PlaceholderAlignment.middle,
-                  ),
-                ],
+            Container(
+              height: 39,
+              width: 39,
+              padding: const EdgeInsets.all(3),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: _gold.withValues(alpha: .65),
+                ),
+                gradient: const LinearGradient(
+                  colors: [
+                    Color(0xFF302516),
+                    Color(0xFF100E0A),
+                  ],
+                ),
+              ),
+              child: Image.asset(
+                'assets/images/khant_vpn_icon.png',
+                fit: BoxFit.contain,
               ),
             ),
+            const Gap(11),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  'KHANT VPN',
+                  style: TextStyle(
+                    color: _goldLight,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 1.5,
+                  ),
+                ),
+                const Text(
+                  'PREMIUM PRIVATE NETWORK',
+                  style: TextStyle(
+                    color: Colors.white54,
+                    fontSize: 8,
+                    letterSpacing: 1.4,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+            const Gap(7),
+            const AppVersionLabel(),
           ],
         ),
         actions: [
-          Semantics(
-            key: const ValueKey("profile_add_button"),
-            label: t.pages.profiles.add,
-            child: IconButton(
-              icon: Icon(
-                Icons.add_rounded,
-                color: theme.colorScheme.primary,
+          Container(
+            margin: const EdgeInsets.only(right: 14),
+            decoration: BoxDecoration(
+              color: _gold.withValues(alpha: .10),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: _gold.withValues(alpha: .35),
               ),
-              onPressed: () => ref
-                  .read(bottomSheetsNotifierProvider.notifier)
-                  .showAddProfile(),
+            ),
+            child: Semantics(
+              key: const ValueKey("profile_add_button"),
+              label: t.pages.profiles.add,
+              child: IconButton(
+                icon: const Icon(
+                  Icons.add_rounded,
+                  color: _goldLight,
+                  size: 27,
+                ),
+                onPressed: () => ref
+                    .read(bottomSheetsNotifierProvider.notifier)
+                    .showAddProfile(),
+              ),
             ),
           ),
-          const Gap(8),
         ],
       ),
       body: Container(
-        decoration: BoxDecoration(
-          gradient: theme.brightness == Brightness.dark
-              ? RadialGradient(
-                  center: const Alignment(0, -.15),
-                  radius: .85,
-                  colors: [
-                    Colors.white.withValues(alpha: .045),
-                    Colors.white.withValues(alpha: .015),
-                    Colors.white.withValues(alpha: 0),
-                  ],
-                  stops: const [0, .45, 1],
-                )
-              : RadialGradient(
-                  center: const Alignment(0, -.15),
-                  radius: 1.1,
-                  colors: [
-                    Colors.white.withValues(alpha: .55),
-                    Colors.white.withValues(alpha: 0),
-                    Colors.black.withValues(alpha: .045),
-                  ],
-                  stops: const [0, .5, 1],
-                ),
-          image: DecorationImage(
-            image: const AssetImage('assets/images/world_map.png'),
-            fit: BoxFit.cover,
-            opacity: 0.09,
-            colorFilter: theme.brightness == Brightness.dark
-                ? ColorFilter.mode(
-                    Colors.white.withValues(alpha: .15),
-                    BlendMode.srcIn,
-                  )
-                : ColorFilter.mode(
-                    Colors.grey.withValues(alpha: 1),
-                    BlendMode.srcATop,
-                  ),
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFF17130C),
+              Color(0xFF090909),
+              Color(0xFF050505),
+            ],
           ),
         ),
         child: Stack(
           alignment: Alignment.center,
           children: [
+            Positioned(
+              top: -100,
+              left: -100,
+              right: -100,
+              child: Container(
+                height: 300,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: _gold.withValues(alpha: .09),
+                      blurRadius: 120,
+                      spreadRadius: 35,
+                    ),
+                  ],
+                ),
+              ),
+            ),
             Center(
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 600),
                 child: CustomScrollView(
+                  physics: const BouncingScrollPhysics(),
                   slivers: [
                     MultiSliver(
                       children: [
                         switch (activeProfile) {
-                          AsyncData(value: final profile?) => ProfileTile(
-                              profile: profile,
-                              isMain: true,
-                              margin: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 8,
+                          AsyncData(value: final profile?) => Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                15, 12, 15, 8,
                               ),
-                            ),
-                          _ => const Text(""),
-                        },
-                        const SliverFillRemaining(
-                          hasScrollBody: false,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    ConnectionButton(),
-                                    ActiveProxyDelayIndicator(),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: _cardBackground,
+                                  borderRadius: BorderRadius.circular(19),
+                                  border: Border.all(
+                                    color: _gold.withValues(alpha: .28),
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withValues(
+                                        alpha: .3,
+                                      ),
+                                      blurRadius: 15,
+                                      offset: const Offset(0, 5),
+                                    ),
                                   ],
                                 ),
+                                child: ProfileTile(
+                                  profile: profile,
+                                  isMain: true,
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 4,
+                                    vertical: 4,
+                                  ),
+                                ),
                               ),
-                              ActiveProxyFooter(),
-                              Gap(32),
-                            ],
+                            ),
+                          _ => const SizedBox.shrink(),
+                        },
+                        SliverFillRemaining(
+                          hasScrollBody: false,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                              18, 12, 18, 42,
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Spacer(flex: 2),
+                                Container(
+                                  width: double.infinity,
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 24,
+                                    horizontal: 12,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: _cardBackground.withValues(
+                                      alpha: .88,
+                                    ),
+                                    borderRadius: BorderRadius.circular(28),
+                                    border: Border.all(
+                                      color: _gold.withValues(alpha: .30),
+                                      width: 1,
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: _gold.withValues(alpha: .07),
+                                        blurRadius: 35,
+                                        spreadRadius: 1,
+                                      ),
+                                      BoxShadow(
+                                        color: Colors.black.withValues(
+                                          alpha: .5,
+                                        ),
+                                        blurRadius: 20,
+                                        offset: const Offset(0, 10),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            width: 6,
+                                            height: 6,
+                                            decoration: const BoxDecoration(
+                                              color: _gold,
+                                              shape: BoxShape.circle,
+                                            ),
+                                          ),
+                                          const Gap(8),
+                                          const Text(
+                                            'SECURE CONNECTION',
+                                            style: TextStyle(
+                                              color: _goldLight,
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.w800,
+                                              letterSpacing: 2,
+                                            ),
+                                          ),
+                                          const Gap(8),
+                                          Container(
+                                            width: 6,
+                                            height: 6,
+                                            decoration: const BoxDecoration(
+                                              color: _gold,
+                                              shape: BoxShape.circle,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const Gap(22),
+                                      const ConnectionButton(),
+                                      const Gap(15),
+                                      const ActiveProxyDelayIndicator(),
+                                      const Gap(10),
+                                    ],
+                                  ),
+                                ),
+                                const Spacer(flex: 2),
+                                Container(
+                                  width: double.infinity,
+                                  padding: const EdgeInsets.all(13),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFF12110E),
+                                    borderRadius: BorderRadius.circular(17),
+                                    border: Border.all(
+                                      color: _gold.withValues(alpha: .20),
+                                    ),
+                                  ),
+                                  child: const ActiveProxyFooter(),
+                                ),
+                                const Gap(24),
+                              ],
+                            ),
                           ),
                         ),
                       ],
@@ -149,7 +297,7 @@ class HomePage extends HookConsumerWidget {
                 ),
               ),
             ),
-            if (ref.watch(hasAnyProfileProvider).value ?? false)
+            if (hasProfile)
               Positioned(
                 right: 0,
                 left: 0,
@@ -158,7 +306,7 @@ class HomePage extends HookConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Material(
-                      color: theme.colorScheme.primaryContainer,
+                      color: const Color(0xFF332817),
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(16),
                         topRight: Radius.circular(16),
@@ -172,19 +320,42 @@ class HomePage extends HookConsumerWidget {
                             .read(bottomSheetsNotifierProvider.notifier)
                             .showQuickSettings(),
                         child: Container(
-                          height: 32,
+                          height: 37,
                           padding: const EdgeInsetsDirectional.only(
-                            start: 16,
-                            end: 8,
+                            start: 18,
+                            end: 12,
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: _gold.withValues(alpha: .35),
+                            ),
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(16),
+                              topRight: Radius.circular(16),
+                            ),
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text(t.pages.home.quickSettings),
-                              const Gap(4),
                               const Icon(
-                                Icons.arrow_drop_up_rounded,
-                                size: 16,
+                                Icons.tune_rounded,
+                                color: _goldLight,
+                                size: 17,
+                              ),
+                              const Gap(8),
+                              Text(
+                                t.pages.home.quickSettings,
+                                style: const TextStyle(
+                                  color: _goldLight,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              const Gap(5),
+                              const Icon(
+                                Icons.keyboard_arrow_up_rounded,
+                                color: _goldLight,
+                                size: 19,
                               ),
                             ],
                           ),
@@ -207,9 +378,8 @@ class AppVersionLabel extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final t = ref.watch(translationsProvider).requireValue;
-    final theme = Theme.of(context);
-
     final version = ref.watch(appInfoProvider).requireValue.presentVersion;
+
     if (version.isBlank) return const SizedBox();
 
     return Semantics(
@@ -217,18 +387,23 @@ class AppVersionLabel extends HookConsumerWidget {
       button: false,
       child: Container(
         decoration: BoxDecoration(
-          color: theme.colorScheme.secondaryContainer,
-          borderRadius: BorderRadius.circular(4),
+          color: const Color(0xFF302516),
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(
+            color: _gold.withValues(alpha: .45),
+          ),
         ),
         padding: const EdgeInsets.symmetric(
-          horizontal: 4,
-          vertical: 1,
+          horizontal: 6,
+          vertical: 3,
         ),
         child: Text(
           version,
           textDirection: TextDirection.ltr,
-          style: theme.textTheme.bodySmall?.copyWith(
-            color: theme.colorScheme.onSecondaryContainer,
+          style: const TextStyle(
+            color: _goldLight,
+            fontSize: 9,
+            fontWeight: FontWeight.w700,
           ),
         ),
       ),
