@@ -1,3 +1,4 @@
+
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 
@@ -370,6 +371,7 @@ class _Ctx {
     );
   }
 
+  // KHANT VPN Premium Gold K Logo
   void logo({
     bool pulse = false,
     bool reverse = false,
@@ -391,6 +393,8 @@ class _Ctx {
             .5 + .5 * math.sin(t * 1.5),
           )!;
 
+    final opacity = p.logoOpacity.clamp(0.0, 1.0);
+
     c.save();
     c.translate(center.dx, center.dy);
     c.scale(beat);
@@ -399,24 +403,23 @@ class _Ctx {
     final k = r * .012;
 
     final path = Path()
-      ..moveTo(center.dx - 23 * k, center.dy - 30 * k)
-      ..lineTo(center.dx - 13 * k, center.dy - 30 * k)
-      ..lineTo(center.dx + 1 * k, center.dy - 5 * k)
-      ..lineTo(center.dx + 15 * k, center.dy - 30 * k)
-      ..lineTo(center.dx + 26 * k, center.dy - 30 * k)
-      ..lineTo(center.dx + 7 * k, center.dy)
-      ..lineTo(center.dx + 26 * k, center.dy + 30 * k)
-      ..lineTo(center.dx + 14 * k, center.dy + 30 * k)
-      ..lineTo(center.dx + 1 * k, center.dy + 8 * k)
-      ..lineTo(center.dx - 13 * k, center.dy + 30 * k)
-      ..lineTo(center.dx - 24 * k, center.dy + 30 * k)
-      ..lineTo(center.dx - 7 * k, center.dy)
+      ..moveTo(center.dx - 20 * k, center.dy - 32 * k)
+      ..lineTo(center.dx - 8 * k, center.dy - 32 * k)
+      ..lineTo(center.dx - 8 * k, center.dy - 6 * k)
+      ..lineTo(center.dx + 17 * k, center.dy - 32 * k)
+      ..lineTo(center.dx + 32 * k, center.dy - 32 * k)
+      ..lineTo(center.dx + 4 * k, center.dy - 2 * k)
+      ..lineTo(center.dx + 32 * k, center.dy + 32 * k)
+      ..lineTo(center.dx + 17 * k, center.dy + 32 * k)
+      ..lineTo(center.dx - 8 * k, center.dy + 5 * k)
+      ..lineTo(center.dx - 8 * k, center.dy + 32 * k)
+      ..lineTo(center.dx - 20 * k, center.dy + 32 * k)
       ..close();
 
     c.drawPath(
       path,
       Paint()
-        ..color = gold.withValues(alpha: .22 * p.logoOpacity)
+        ..color = gold.withValues(alpha: .22 * opacity)
         ..maskFilter = const MaskFilter.blur(
           BlurStyle.normal,
           10,
@@ -430,9 +433,9 @@ class _Ctx {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            goldLight,
-            color,
-            goldDark,
+            goldLight.withValues(alpha: opacity),
+            color.withValues(alpha: opacity),
+            goldDark.withValues(alpha: opacity),
           ],
         ).createShader(
           Rect.fromCenter(
