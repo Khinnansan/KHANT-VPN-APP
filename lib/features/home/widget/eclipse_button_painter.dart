@@ -220,14 +220,16 @@ void _connected(_Ctx x) {
   final down = traffic.down * appear;
   final up = traffic.up * appear;
 
+  const connectedGreen = Color(0xFF20E66B);
+
   x.glow(
-    color: const Color(0xFFFFC857),
-    level: down,
-    reach: .8,
+    color: connectedGreen,
+    level: math.max(.28, down),
+    reach: .95,
   );
 
   x.glow(
-    color: const Color(0xFFFFE6A6),
+    color: const Color(0xFFFFD45C),
     level: up,
     reach: 1.1,
   );
@@ -235,6 +237,20 @@ void _connected(_Ctx x) {
   x.ripple(s);
   x.disc();
   x.goldRing(strength: .5 + .5 * math.max(down, up));
+
+  // Green outer ring communicates the connected state while preserving
+  // KHANT VPN's gold premium identity.
+  x.c.drawCircle(
+    x.center,
+    x.r * .94,
+    Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.2
+      ..color = connectedGreen.withValues(
+        alpha: (.35 + .35 * math.max(down, up)).clamp(0.0, .8),
+      )
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5),
+  );
 
   x.logo(
     pulse: true,
