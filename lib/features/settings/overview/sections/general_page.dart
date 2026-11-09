@@ -1,3 +1,4 @@
+
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:hiddify/core/haptic/haptic_service.dart';
@@ -5,57 +6,137 @@ import 'package:hiddify/core/localization/translations.dart';
 import 'package:hiddify/core/preferences/general_preferences.dart';
 import 'package:hiddify/core/router/dialog/dialog_notifier.dart';
 import 'package:hiddify/features/auto_start/notifier/auto_start_notifier.dart';
+import 'package:hiddify/features/chain/overview/chain_quick_settings.dart';
 import 'package:hiddify/features/common/general_pref_tiles.dart';
 import 'package:hiddify/features/settings/data/config_option_repository.dart';
+import 'package:hiddify/features/settings/widget/lan_sharing_tile.dart';
 import 'package:hiddify/features/settings/widget/preference_tile.dart';
 import 'package:hiddify/hiddifycore/core_interface/core_interface_mobile.dart';
+import 'package:hiddify/singbox/model/singbox_config_enum.dart';
 import 'package:hiddify/utils/utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:humanizer/humanizer.dart';
 
 class GeneralPage extends HookConsumerWidget {
   const GeneralPage({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final t = ref.watch(translationsProvider).requireValue;
+    final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text(t.pages.settings.general.title)),
+      appBar: AppBar(
+        title: Text(t.pages.settings.general.title),
+      ),
       body: ListView(
         children: [
+          // KHANT VPN Connection Settings
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 20, 16, 8),
+            child: Text(
+              'CONNECTION & SHARING',
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: theme.colorScheme.primary,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 1.3,
+              ),
+            ),
+          ),
+          Card(
+            margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            clipBehavior: Clip.antiAlias,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: SegmentedButton<ServiceMode>(
+                    showSelectedIcon: false,
+                    segments: ServiceMode.choices
+                        .map(
+                          (e) => ButtonSegment<ServiceMode>(
+                            value: e,
+                            label: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              child: Text(
+                                e.presentShort(t),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                    selected: {ref.watch(ConfigOptions.serviceMode)},
+                    onSelectionChanged: (newSet) {
+                      ref
+                          .read(ConfigOptions.serviceMode.notifier)
+                          .update(newSet.first);
+                    },
+                  ),
+                ),
+                const Divider(height: 1),
+                const LanSharingPreferenceWidget(showLeading: true),
+                const Divider(height: 1),
+                const ChainQuickSettings(),
+              ],
+            ),
+          ),
+
+          // General Settings
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
+            child: Text(
+              'GENERAL',
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: theme.colorScheme.primary,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 1.3,
+              ),
+            ),
+          ),
           const LocalePrefTile(),
           const ThemeModePrefTile(),
           const EnableAnalyticsPrefTile(),
+
           SwitchListTile.adaptive(
             title: Text(t.pages.settings.general.autoIpCheck),
             value: ref.watch(Preferences.autoCheckIp),
             secondary: const Icon(Icons.flag_rounded),
             onChanged: ref.read(Preferences.autoCheckIp.notifier).update,
           ),
+
           if (PlatformUtils.isAndroid) ...[
             SwitchListTile.adaptive(
               title: Text(t.pages.settings.general.dynamicNotification),
               secondary: const Icon(Icons.speed_rounded),
               value: ref.watch(Preferences.dynamicNotification),
-              onChanged: ref.read(Preferences.dynamicNotification.notifier).update,
+              onChanged:
+                  ref.read(Preferences.dynamicNotification.notifier).update,
             ),
             SwitchListTile.adaptive(
               title: Text(t.pages.settings.general.hapticFeedback),
               secondary: const Icon(Icons.vibration_rounded),
               value: ref.watch(hapticServiceProvider),
-              onChanged: ref.read(hapticServiceProvider.notifier).updatePreference,
+              onChanged: ref
+                  .read(hapticServiceProvider.notifier)
+                  .updatePreference,
             ),
           ],
+
           if (PlatformUtils.isIOS)
             SwitchListTile.adaptive(
               title: Text(t.pages.settings.general.alwaysOnVpn),
               secondary: const Icon(Icons.vpn_lock_rounded),
               value: ref.watch(Preferences.alwaysOnVpn),
               onChanged: (value) async {
-                await ref.read(Preferences.alwaysOnVpn.notifier).update(value);
-                await CoreInterfaceMobile.methodChannel.invokeMethod("set_always_on", value);
+                await ref
+                    .read(Preferences.alwaysOnVpn.notifier)
+                    .update(value);
+                await CoreInterfaceMobile.methodChannel
+                    .invokeMethod("set_always_on", value);
               },
             ),
+
           if (PlatformUtils.isDesktop) ...[
             const ClosingPrefTile(),
             SwitchListTile.adaptive(
@@ -63,53 +144,90 @@ class GeneralPage extends HookConsumerWidget {
               secondary: const Icon(Icons.auto_mode_rounded),
               value: ref.watch(autoStartNotifierProvider).asData!.value,
               onChanged: (value) async => value
-                  ? await ref.read(autoStartNotifierProvider.notifier).enable()
-                  : await ref.read(autoStartNotifierProvider.notifier).disable(),
+                  ? await ref
+                      .read(autoStartNotifierProvider.notifier)
+                      .enable()
+                  : await ref
+                      .read(autoStartNotifierProvider.notifier)
+                      .disable(),
             ),
             SwitchListTile.adaptive(
               title: Text(t.pages.settings.general.silentStart),
               secondary: const Icon(Icons.visibility_off_rounded),
               value: ref.watch(Preferences.silentStart),
-              onChanged: ref.read(Preferences.silentStart.notifier).update,
+              onChanged:
+                  ref.read(Preferences.silentStart.notifier).update,
             ),
           ],
+
           if (PlatformUtils.isAndroid) const BatteryOptimizationWidget(),
+
           SwitchListTile.adaptive(
             title: Text(t.pages.settings.general.memoryLimit),
             subtitle: Text(t.pages.settings.general.memoryLimitMsg),
             secondary: const Icon(Icons.memory_rounded),
             value: !ref.watch(Preferences.disableMemoryLimit),
-            onChanged: (value) async => await ref.read(Preferences.disableMemoryLimit.notifier).update(!value),
+            onChanged: (value) async {
+              await ref
+                  .read(Preferences.disableMemoryLimit.notifier)
+                  .update(!value);
+            },
           ),
-          // Debug mode and log level moved to the Logs page. Both decide how
-          // much is recorded, which is only meaningful next to the logs
-          // themselves — and next to the filters that decide what is shown.
+
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
+            child: Text(
+              'ADVANCED',
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: theme.colorScheme.primary,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 1.3,
+              ),
+            ),
+          ),
+
           ValuePreferenceWidget(
             value: ref.watch(ConfigOptions.connectionTestUrl),
             preferences: ref.watch(ConfigOptions.connectionTestUrl.notifier),
             title: t.pages.settings.general.connectionTestUrl,
             icon: Icons.link_rounded,
           ),
+
           ListTile(
             title: Text(t.pages.settings.general.urlTestInterval),
-            subtitle: Text(ref.watch(ConfigOptions.urlTestInterval).toApproximateTime(isRelativeToNow: false)),
+            subtitle: Text(
+              ref
+                  .watch(ConfigOptions.urlTestInterval)
+                  .toApproximateTime(isRelativeToNow: false),
+            ),
             leading: const Icon(Icons.timer_rounded),
-            onTap: () async => await ref
-                .read(dialogNotifierProvider.notifier)
-                .showSettingSlider(
-                  title: t.pages.settings.general.urlTestInterval,
-                  initialValue: ref.watch(ConfigOptions.urlTestInterval).inMinutes.coerceIn(0, 60).toDouble(),
-                  onReset: ref.read(ConfigOptions.urlTestInterval.notifier).reset,
-                  min: 1,
-                  max: 60,
-                  divisions: 60,
-                  labelGen: (value) => Duration(minutes: value.toInt()).toApproximateTime(isRelativeToNow: false),
-                )
-                .then((value) async {
-                  if (value == null) return;
-                  await ref.read(ConfigOptions.urlTestInterval.notifier).update(Duration(minutes: value.toInt()));
-                }),
+            onTap: () async {
+              await ref
+                  .read(dialogNotifierProvider.notifier)
+                  .showSettingSlider(
+                    title: t.pages.settings.general.urlTestInterval,
+                    initialValue: ref
+                        .watch(ConfigOptions.urlTestInterval)
+                        .inMinutes
+                        .coerceIn(0, 60)
+                        .toDouble(),
+                    onReset:
+                        ref.read(ConfigOptions.urlTestInterval.notifier).reset,
+                    min: 1,
+                    max: 60,
+                    divisions: 60,
+                    labelGen: (value) => Duration(minutes: value.toInt())
+                        .toApproximateTime(isRelativeToNow: false),
+                  )
+                  .then((value) async {
+                if (value == null) return;
+                await ref
+                    .read(ConfigOptions.urlTestInterval.notifier)
+                    .update(Duration(minutes: value.toInt()));
+              });
+            },
           ),
+
           ValuePreferenceWidget(
             value: ref.watch(ConfigOptions.clashApiPort),
             preferences: ref.watch(ConfigOptions.clashApiPort.notifier),
@@ -119,13 +237,19 @@ class GeneralPage extends HookConsumerWidget {
             digitsOnly: true,
             inputToValue: int.tryParse,
           ),
+
           SwitchListTile.adaptive(
             title: Text(t.pages.settings.general.useXrayCoreWhenPossible),
-            subtitle: Text(t.pages.settings.general.useXrayCoreWhenPossibleMsg),
+            subtitle: Text(
+              t.pages.settings.general.useXrayCoreWhenPossibleMsg,
+            ),
             secondary: const Icon(Icons.extension_rounded),
             value: ref.watch(ConfigOptions.useXrayCoreWhenPossible),
-            onChanged: ref.read(ConfigOptions.useXrayCoreWhenPossible.notifier).update,
+            onChanged:
+                ref.read(ConfigOptions.useXrayCoreWhenPossible.notifier).update,
           ),
+
+          const SizedBox(height: 24),
         ],
       ),
     );
