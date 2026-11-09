@@ -142,6 +142,47 @@ class AddProfileManual extends HookConsumerWidget {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.primaryContainer.withValues(alpha: 0.35),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: theme.colorScheme.outlineVariant),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.cloud_sync_outlined, size: 20, color: theme.colorScheme.primary),
+                      const Gap(8),
+                      Text(
+                        'KHANT VPN Subscription',
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          color: theme.colorScheme.primary,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Gap(6),
+                  Text(
+                    'Add your provider subscription URL here. Server profiles can be refreshed from this link without reinstalling the app.',
+                    style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                  ),
+                  const Gap(4),
+                  Text(
+                    'Supports subscription lists containing Outline (Shadowsocks), VMess and VLESS links.',
+                    style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const Gap(12),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: CustomTextFormField(
               maxLines: 1,
               controller: nameTextController,
@@ -157,8 +198,8 @@ class AddProfileManual extends HookConsumerWidget {
               maxLines: 1,
               controller: urlTextController,
               validator: (value) => (value != null && !isUrl(value)) ? t.pages.profileDetails.form.invalidUrl : null,
-              label: t.common.url,
-              hint: t.pages.profileDetails.form.urlHint,
+              label: 'Subscription URL (HTTPS)',
+              hint: 'https://your-provider.example/subscription',
             ),
           ),
           const Gap(12),
