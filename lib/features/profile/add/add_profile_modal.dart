@@ -186,9 +186,8 @@ class AddProfileManual extends HookConsumerWidget {
             child: CustomTextFormField(
               maxLines: 1,
               controller: nameTextController,
-              validator: (value) => (value?.isEmpty ?? true) ? t.pages.profileDetails.form.emptyName : null,
-              label: t.common.name,
-              hint: t.pages.profileDetails.form.nameHint,
+              label: 'Profile name (optional)',
+              hint: 'Leave blank to use the name from your subscription',
             ),
           ),
           const Gap(16),
@@ -270,7 +269,9 @@ class AddProfileManual extends HookConsumerWidget {
                             .addManual(
                               url: urlTextController.text.trim(),
                               userOverride: UserOverride(
-                                name: nameTextController.text.trim(),
+                                name: nameTextController.text.trim().isEmpty
+                                    ? null
+                                    : nameTextController.text.trim(),
                                 isAutoUpdateDisable: isAutoUpdateDisable.value,
                                 updateInterval: interval,
                               ),
