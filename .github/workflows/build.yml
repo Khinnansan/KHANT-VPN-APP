@@ -55,7 +55,7 @@ jobs:
         run: python3 .github/scripts/validate_ios_release_config.py
 
       - name: Prepare
-        run: make linux-amd64-prepare
+        run: make common-prepare
 
       - name: Analyze Dart and Flutter sources
         run: flutter analyze --no-fatal-infos --no-fatal-warnings
