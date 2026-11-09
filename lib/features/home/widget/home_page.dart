@@ -25,7 +25,6 @@ class HomePage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final t = ref.watch(translationsProvider).requireValue;
     final activeProfile = ref.watch(activeProfileProvider);
-    final hasProfile = ref.watch(hasAnyProfileProvider).value ?? false;
 
     return Scaffold(
       backgroundColor: _darkBackground,
@@ -158,7 +157,10 @@ class HomePage extends HookConsumerWidget {
                         switch (activeProfile) {
                           AsyncData(value: final profile?) => Padding(
                               padding: const EdgeInsets.fromLTRB(
-                                15, 12, 15, 8,
+                                15,
+                                12,
+                                15,
+                                8,
                               ),
                               child: Container(
                                 decoration: BoxDecoration(
@@ -193,7 +195,10 @@ class HomePage extends HookConsumerWidget {
                           hasScrollBody: false,
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(
-                              18, 12, 18, 42,
+                              18,
+                              12,
+                              18,
+                              24,
                             ),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -297,74 +302,6 @@ class HomePage extends HookConsumerWidget {
                 ),
               ),
             ),
-            if (hasProfile)
-              Positioned(
-                right: 0,
-                left: 0,
-                bottom: 0,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Material(
-                      color: const Color(0xFF332817),
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(16),
-                        topRight: Radius.circular(16),
-                      ),
-                      child: InkWell(
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(16),
-                          topRight: Radius.circular(16),
-                        ),
-                        onTap: () => ref
-                            .read(bottomSheetsNotifierProvider.notifier)
-                            .showQuickSettings(),
-                        child: Container(
-                          height: 37,
-                          padding: const EdgeInsetsDirectional.only(
-                            start: 18,
-                            end: 12,
-                          ),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: _gold.withValues(alpha: .35),
-                            ),
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(16),
-                              topRight: Radius.circular(16),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(
-                                Icons.tune_rounded,
-                                color: _goldLight,
-                                size: 17,
-                              ),
-                              const Gap(8),
-                              Text(
-                                t.pages.home.quickSettings,
-                                style: const TextStyle(
-                                  color: _goldLight,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 12,
-                                ),
-                              ),
-                              const Gap(5),
-                              const Icon(
-                                Icons.keyboard_arrow_up_rounded,
-                                color: _goldLight,
-                                size: 19,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
           ],
         ),
       ),
