@@ -1,0 +1,16 @@
+name = "khant-vpn-subscription"
+main = "worker.js"
+compatibility_date = "2026-11-10"
+
+# Create a KV namespace in Cloudflare and replace the id below before deploying.
+[[kv_namespaces]]
+binding = "ACCESS_KEYS"
+id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+
+[vars]
+GITHUB_OWNER = "REPLACE_WITH_OWNER"
+GITHUB_REPO = "REPLACE_WITH_PRIVATE_REPO"
+GITHUB_FILE = "servers.txt"
+GITHUB_BRANCH = "main"
+
+# Set GITHUB_TOKEN as a Worker secret; never put it in this file.
