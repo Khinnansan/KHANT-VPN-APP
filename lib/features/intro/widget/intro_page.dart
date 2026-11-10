@@ -109,9 +109,23 @@ class IntroPage extends HookConsumerWidget with PresLogger {
                   const Gap(24),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Text(
+                    child: Text.rich(
                       t.intro.termsAndPolicyCaution(
-                        tap: (text) => text,
+                        tap: (text) => TextSpan(
+                          text: text,
+                          style: const TextStyle(
+                            color: Colors.blue,
+                            decoration: TextDecoration.underline,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () async {
+                              await UriUtils.tryLaunch(
+                                Uri.parse(
+                                  IntroConst.url[IntroConst.termsAndConditionsKey]!,
+                                ),
+                              );
+                            },
+                        ),
                       ),
                       style: theme.textTheme.bodySmall,
                       textAlign: TextAlign.center,
