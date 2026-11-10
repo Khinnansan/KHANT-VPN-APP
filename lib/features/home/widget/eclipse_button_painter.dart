@@ -233,7 +233,7 @@ void _connected(_Ctx x) {
   x.orbit(s, connected: true);
   x.ripple(s);
   x.disc();
-  x.goldRing(strength: .85 + .15 * pulse);
+  x.connectedRing(strength: .88 + .12 * pulse, time: s);
 
   x.logo(
     pulse: true,
@@ -324,6 +324,52 @@ class _Ctx {
       [Offset(.28,.08),Offset(.45,.12),Offset(.52,.30),Offset(.42,.48),Offset(.28,.40),Offset(.20,.22)],
       [Offset(.60,-.20),Offset(.75,-.12),Offset(.82,.02),Offset(.72,.12),Offset(.60,.02)],
     ];
+
+    const landShapes = <List<Offset>>[
+      [Offset(-.94,-.16),Offset(-.82,-.34),Offset(-.64,-.40),Offset(-.48,-.30),Offset(-.40,-.12),Offset(-.47,.04),Offset(-.56,.12),Offset(-.58,.35),Offset(-.72,.42),Offset(-.82,.20)],
+      [Offset(-.42,-.48),Offset(-.25,-.57),Offset(-.08,-.49),Offset(-.02,-.36),Offset(-.15,-.24),Offset(-.32,-.25)],
+      [Offset(-.31,.02),Offset(-.15,.10),Offset(-.08,.30),Offset(-.18,.58),Offset(-.29,.48),Offset(-.39,.20)],
+      [Offset(-.03,-.43),Offset(.12,-.56),Offset(.34,-.52),Offset(.54,-.35),Offset(.61,-.14),Offset(.47,-.03),Offset(.29,-.12),Offset(.17,.02),Offset(.03,-.12)],
+      [Offset(.25,.08),Offset(.43,.08),Offset(.58,.23),Offset(.54,.42),Offset(.39,.52),Offset(.25,.37),Offset(.16,.20)],
+      [Offset(.62,-.23),Offset(.80,-.17),Offset(.93,-.03),Offset(.86,.12),Offset(.72,.16),Offset(.62,.02)],
+    ];
+    bool inside(Offset point, List<Offset> polygon) {
+      var hit = false;
+      for (var i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+        final a = polygon[i];
+        final b = polygon[j];
+        final crosses = ((a.dy > point.dy) != (b.dy > point.dy)) &&
+            (point.dx < (b.dx - a.dx) * (point.dy - a.dy) / ((b.dy - a.dy) == 0 ? .00001 : (b.dy - a.dy)) + a.dx);
+        if (crosses) hit = !hit;
+      }
+      return hit;
+    }
+
+    // Fill each continent with a fine dotted grid to resemble the reference map.
+    for (final shape in landShapes) {
+      for (var y = -.58; y <= .62; y += .045) {
+        for (var xx = -.98; xx <= .98; xx += .045) {
+          final point = Offset(xx, y);
+          if (!inside(point, shape)) continue;
+          final at = Offset(mapCenter.dx + xx * globeRadius, mapCenter.dy + y * globeRadius);
+          final dotRadius = r * (connected ? .012 : .010);
+          if (connected) {
+            c.drawCircle(
+              at,
+              dotRadius * 3.5,
+              Paint()
+                ..color = color.withValues(alpha: .12 * pulse)
+                ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 3),
+            );
+          }
+          c.drawCircle(
+            at,
+            dotRadius,
+            Paint()..color = color.withValues(alpha: (connected ? .86 : .72) * pulse),
+          );
+        }
+      }
+    }
 
     for (final continent in continents) {
       for (final point in continent) {
@@ -462,6 +508,57 @@ class _Ctx {
     );
   }
 
+  void connectedRing({required double strength, required double time}) {
+    final ringColor = const Color(0xFF42FF35);
+    final radius = r - 2;
+    c.drawCircle(
+      center,
+      radius,
+      Paint()
+        ..color = ringColor.withValues(alpha: .34 * strength)
+        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 12),
+    );
+    c.drawCircle(
+      center,
+      radius,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 5.5
+        ..color = ringColor.withValues(alpha: .18 * strength)
+        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8),
+    );
+    c.drawCircle(
+      center,
+      radius,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 2.8
+        ..color = ringColor.withValues(alpha: strength),
+    );
+    c.drawCircle(
+      center,
+      radius - 6,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.2
+        ..color = const Color(0xFFB7FF8C).withValues(alpha: .8 * strength),
+    );
+    // Moving segmented energy around the outer edge.
+    for (var i = 0; i < 32; i++) {
+      final angle = i * math.pi * 2 / 32 + time * .85;
+      final inner = center + Offset.fromDirection(angle, radius + 4);
+      final outer = center + Offset.fromDirection(angle, radius + 8 + 3 * math.sin(time * 3 + i));
+      c.drawLine(
+        inner,
+        outer,
+        Paint()
+          ..strokeWidth = 1.5
+          ..strokeCap = StrokeCap.round
+          ..color = ringColor.withValues(alpha: (.35 + .55 * math.sin(time * 2 + i).abs()) * strength),
+      );
+    }
+  }
+
   // KHANT VPN Premium Gold K Logo
   void logo({
     bool pulse = false,
@@ -545,6 +642,44 @@ class _Ctx {
         Paint()..color = goldLight);
     c.drawCircle(center.translate(0, -47 * k), 2.2 * k,
         Paint()..color = goldLight);
+
+    final swoosh = Path()
+      ..moveTo(center.dx - 34 * k, center.dy + 19 * k)
+      ..cubicTo(
+        center.dx - 5 * k, center.dy + 5 * k,
+        center.dx + 18 * k, center.dy + 10 * k,
+        center.dx + 37 * k, center.dy - 23 * k,
+      )
+      ..cubicTo(
+        center.dx + 18 * k, center.dy + 4 * k,
+        center.dx - 12 * k, center.dy + 32 * k,
+        center.dx - 34 * k, center.dy + 19 * k,
+      );
+    if (connected) {
+      c.drawPath(
+        swoosh,
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 4.2 * k
+          ..strokeCap = StrokeCap.round
+          ..color = const Color(0xFF35FF45).withValues(alpha: .42)
+          ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5),
+      );
+    }
+    c.drawPath(
+      swoosh,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 3.4 * k
+        ..strokeCap = StrokeCap.round
+        ..shader = const LinearGradient(
+          colors: [Color(0xFFFFF0A8), Color(0xFFFFC32B), Color(0xFFB87508)],
+        ).createShader(Rect.fromCenter(
+          center: center,
+          width: r * .9,
+          height: r * .6,
+        )),
+    );
 
     c.drawPath(
       path,
