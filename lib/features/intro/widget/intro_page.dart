@@ -210,7 +210,7 @@ class IntroPage extends HookConsumerWidget with PresLogger {
                     onKeyEvent: (node, event) => _handleKeyEvent(event, IntroConst.licenseKey),
                     child: const Gap(88),
                   ),
-                ],,
+                ],
               ),
             ),
           ),
