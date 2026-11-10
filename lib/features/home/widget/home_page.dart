@@ -9,7 +9,6 @@ import 'package:hiddify/features/home/widget/connection_button.dart';
 import 'package:hiddify/features/profile/notifier/active_profile_notifier.dart';
 import 'package:hiddify/features/profile/widget/profile_tile.dart';
 import 'package:hiddify/features/proxy/active/active_proxy_card.dart';
-import 'package:hiddify/features/proxy/active/active_proxy_delay_indicator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
@@ -272,9 +271,6 @@ class HomePage extends HookConsumerWidget {
                                       ),
                                       const Gap(22),
                                       const ConnectionButton(),
-                                      const Gap(15),
-                                      const ActiveProxyDelayIndicator(),
-                                      const Gap(10),
                                     ],
                                   ),
                                 ),
