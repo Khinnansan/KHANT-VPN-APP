@@ -97,7 +97,7 @@
   },
   "intro": {
     "banner": "Secure • Fast • Private",
-    "termsAndPolicyCaution(rich)": "By continuing you agree to ${tap(@:pages.about.termsAndConditions)}",
+    "termsAndPolicyCaution(rich)": "By continuing, you agree to use KHANT VPN.",
     "info(rich)": "Made with ❤️ by KHANT VPN. ${tap_source(Open source)} and ${tap_license(License)}"
   },
   "pages": {
