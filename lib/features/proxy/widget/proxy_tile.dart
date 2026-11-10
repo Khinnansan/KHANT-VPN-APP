@@ -20,12 +20,24 @@ class ProxyTile extends HookConsumerWidget with PresLogger {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
 
-    return ListTile(
-      // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: selected ? const Color(0xFF2B2111) : const Color(0xFF15130F),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: selected ? const Color(0xFFFFC857) : const Color(0xFF6D572F).withValues(alpha: .35),
+        ),
+      ),
+      child: ListTile(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       title: Text(
         proxy.nameWithDetour,
         overflow: TextOverflow.ellipsis,
-        style: PlatformUtils.isWindows ? const TextStyle(fontFamily: FontFamily.emoji) : null,
+        style: (PlatformUtils.isWindows ? const TextStyle(fontFamily: FontFamily.emoji) : const TextStyle()).copyWith(
+          color: selected ? const Color(0xFFFFE3A0) : Colors.white,
+          fontWeight: FontWeight.w700,
+        ),
       ),
       leading: IPCountryFlag(
         countryCode: proxy.ipinfo.countryCode,
@@ -51,8 +63,8 @@ class ProxyTile extends HookConsumerWidget with PresLogger {
         children: [
           if (proxy.urlTestDelay != 0)
             Text(
-              ConnectionConst.isValidDelay(proxy.urlTestDelay) ? proxy.urlTestDelay.toString() : "×",
-              style: TextStyle(color: delayColor(context, proxy.urlTestDelay)),
+              ConnectionConst.isValidDelay(proxy.urlTestDelay) ? '${proxy.urlTestDelay} ms' : "×",
+              style: TextStyle(color: delayColor(context, proxy.urlTestDelay), fontWeight: FontWeight.w800),
             ),
 
           if (proxy.download > 0) Text("⬩", style: Theme.of(context).textTheme.bodySmall),
@@ -60,10 +72,12 @@ class ProxyTile extends HookConsumerWidget with PresLogger {
       ),
 
       selected: selected,
-      selectedTileColor: theme.colorScheme.primaryContainer,
+      selectedTileColor: const Color(0xFF3A2B12),
       onTap: onTap,
       onLongPress: () async => await ref.read(dialogNotifierProvider.notifier).showProxyInfo(outboundInfo: proxy),
       horizontalTitleGap: 4,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+    ),
     );
   }
 
