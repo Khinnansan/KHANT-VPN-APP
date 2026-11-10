@@ -106,12 +106,15 @@ class IntroPage extends HookConsumerWidget with PresLogger {
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
                       t.intro.banner,
-                      style: theme.textTheme.bodyLarge?.copyWith(
+                      style: theme.textTheme.bodyMedium?.copyWith(
                         color: Colors.white70,
-                        letterSpacing: 1.4,
+                        fontSize: 14,
+                        height: 1.45,
+                        letterSpacing: .4,
                       ),
                       textAlign: TextAlign.center,
-                      maxLines: 2,
+                      maxLines: 3,
+                      overflow: TextOverflow.visible,
                     ),
                   ),
                   const Gap(34),
