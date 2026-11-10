@@ -78,7 +78,7 @@ class App extends HookConsumerWidget with WidgetsBindingObserver, PresLogger {
                 routerConfig: router,
                 scaffoldMessengerKey: appScaffoldMessengerKey,
                 locale: locale.flutterLocale,
-                supportedLocales: AppLocaleUtils.supportedLocales,
+                supportedLocales: const [Locale("my"), Locale("en")],
                 localizationsDelegates: GlobalMaterialLocalizations.delegates,
                 debugShowCheckedModeBanner: false,
                 themeMode: themeMode.flutterThemeMode,
