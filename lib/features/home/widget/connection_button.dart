@@ -462,7 +462,7 @@ class _ConnectionDurationCard extends HookWidget {
           const Gap(10),
           const Text('Connection time', style: TextStyle(color: Colors.white70, fontSize: 12)),
           const Gap(10),
-          Text(label, style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700, fontFeatures: [FontFeature.tabularFigures()])),
+          Text(label, style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700)),
         ],
       ),
     );
