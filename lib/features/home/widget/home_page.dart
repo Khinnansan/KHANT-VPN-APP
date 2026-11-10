@@ -154,41 +154,16 @@ class HomePage extends HookConsumerWidget {
                     MultiSliver(
                       children: [
                         switch (activeProfile) {
-                          AsyncData(value: final profile?) => Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                15,
-                                12,
-                                15,
-                                8,
-                              ),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: _cardBackground,
-                                  borderRadius: BorderRadius.circular(19),
-                                  border: Border.all(
-                                    color: _gold.withValues(alpha: .28),
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withValues(
-                                        alpha: .3,
-                                      ),
-                                      blurRadius: 15,
-                                      offset: const Offset(0, 5),
-                                    ),
-                                  ],
-                                ),
-                                child: ProfileTile(
-                                  profile: profile,
-                                  isMain: true,
-                                  margin: const EdgeInsets.symmetric(
-                                    horizontal: 4,
-                                    vertical: 4,
-                                  ),
-                                ),
+                          AsyncData(value: final profile?) =>
+                            SliverPersistentHeader(
+                              pinned: true,
+                              delegate: _ProfileTileHeaderDelegate(
+                                profile: profile,
                               ),
                             ),
-                          _ => const SizedBox.shrink(),
+                          _ => const SliverToBoxAdapter(
+                              child: SizedBox.shrink(),
+                            ),
                         },
                         SliverFillRemaining(
                           hasScrollBody: false,
@@ -342,4 +317,54 @@ class AppVersionLabel extends HookConsumerWidget {
       ),
     );
   }
+}
+
+
+class _ProfileTileHeaderDelegate extends SliverPersistentHeaderDelegate {
+  _ProfileTileHeaderDelegate({required this.profile});
+
+  final dynamic profile;
+
+  @override
+  double get minExtent => 104;
+
+  @override
+  double get maxExtent => 104;
+
+  @override
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    return Container(
+      color: const Color(0xFF17130C),
+      padding: const EdgeInsets.fromLTRB(15, 8, 15, 8),
+      child: Container(
+        decoration: BoxDecoration(
+          color: _cardBackground,
+          borderRadius: BorderRadius.circular(19),
+          border: Border.all(
+            color: _gold.withValues(alpha: .28),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: .3),
+              blurRadius: 15,
+              offset: const Offset(0, 5),
+            ),
+          ],
+        ),
+        child: ProfileTile(
+          profile: profile,
+          isMain: true,
+          margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+        ),
+      ),
+    );
+  }
+
+  @override
+  bool shouldRebuild(covariant _ProfileTileHeaderDelegate oldDelegate) =>
+      oldDelegate.profile != profile;
 }
