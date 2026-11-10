@@ -25,8 +25,11 @@ class ProxiesOverviewPage extends HookConsumerWidget with PresLogger {
     // );
 
     return Scaffold(
+      backgroundColor: const Color(0xFF080808),
       appBar: AppBar(
-        title: Text(t.pages.proxies.title),
+        backgroundColor: const Color(0xFF080808),
+        surfaceTintColor: Colors.transparent,
+        title: Text(t.pages.proxies.title, style: const TextStyle(color: Color(0xFFFFE3A0), fontWeight: FontWeight.w800)),
         actions: [
           PopupMenuButton<ProxiesSort>(
             initialValue: sortBy,
@@ -41,6 +44,8 @@ class ProxiesOverviewPage extends HookConsumerWidget with PresLogger {
         ],
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: const Color(0xFFFFC857),
+        foregroundColor: const Color(0xFF17110A),
         onPressed: () async => await ref.read(proxiesOverviewNotifierProvider.notifier).urlTest("select"),
         tooltip: t.pages.proxies.testDelay,
         child: const Icon(FluentIcons.flash_24_filled),
@@ -52,7 +57,7 @@ class ProxiesOverviewPage extends HookConsumerWidget with PresLogger {
                   final width = constraints.maxWidth;
                   final crossAxisCount = PlatformUtils.isMobile && width < 600 ? 1 : max(1, (width / 268).floor());
                   return GridView.builder(
-                    padding: const EdgeInsets.only(bottom: 86),
+                    padding: const EdgeInsets.fromLTRB(8, 12, 8, 96),
                     itemCount: group.items.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: crossAxisCount,
