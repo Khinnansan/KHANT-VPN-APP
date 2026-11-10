@@ -57,6 +57,7 @@
     "psiphon": "Psiphon",
     "profile": "Profile",
     "configuration": "Configuration",
+    "advancedSettings": "Advanced settings",
     "file": "File",
     "interval": {
       "day": {
