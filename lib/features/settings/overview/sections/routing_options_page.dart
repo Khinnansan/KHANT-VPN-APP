@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:circle_flags/circle_flags.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
@@ -44,7 +43,6 @@ class RoutingOptionsPage extends HookConsumerWidget {
       appBar: AppBar(
         title: Text(t.pages.settings.routing.title),
         actions: [
-          const _RegionChip(),
           PopupMenuButton(
             icon: const Icon(Icons.more_vert_rounded),
             itemBuilder: (_) {
@@ -90,95 +88,6 @@ class RoutingOptionsPage extends HookConsumerWidget {
 }
 
 /// The region decides the region rule and auto selection, so it stays in sight; the flag shows which one.
-class _RegionChip extends ConsumerWidget {
-  const _RegionChip();
-
-  static const _radius = BorderRadius.all(Radius.circular(8));
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final t = ref.watch(translationsProvider).requireValue;
-    final theme = Theme.of(context);
-    final region = ref.watch(ConfigOptions.region);
-    final colorScheme = theme.colorScheme;
-    // a popup menu, so back closes it and not the page
-    return PopupMenuButton<Region>(
-      tooltip: region.presentName(t),
-      position: PopupMenuPosition.under,
-      borderRadius: _radius,
-      onSelected: ref.read(ConfigOptions.region.notifier).update,
-      itemBuilder: (_) => [
-        for (final option in Region.values)
-          PopupMenuItem(
-            value: option,
-            child: Row(
-              children: [
-                _RegionFlag(option),
-                const Gap(12),
-                Expanded(child: Text(option.presentName(t))),
-                if (option == region) const Icon(Icons.check_rounded),
-              ],
-            ),
-          ),
-      ],
-      child: Container(
-        height: 32,
-        decoration: BoxDecoration(
-          border: Border.all(color: colorScheme.outline),
-          borderRadius: _radius,
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // as tall as the chip: its outer corners follow the line's, its inner ones meet the word
-            _RegionFlag(
-              region,
-              size: 30,
-              borderRadius: const BorderRadiusDirectional.horizontal(start: Radius.circular(7)),
-            ),
-            const Gap(8),
-            Text(
-              t.pages.settings.routing.region,
-              style: theme.textTheme.labelLarge?.copyWith(color: colorScheme.onSurface),
-            ),
-            Icon(Icons.arrow_drop_down_rounded, size: 20, color: colorScheme.onSurfaceVariant),
-            const Gap(4),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/// Square, like the other flags in the app; Other has a gray tile with a globe in the same shape.
-class _RegionFlag extends StatelessWidget {
-  const _RegionFlag(this.region, {this.size = 24, this.borderRadius = const BorderRadius.all(Radius.circular(6))});
-
-  final Region region;
-  final double size;
-  final BorderRadiusGeometry borderRadius;
-
-  @override
-  Widget build(BuildContext context) {
-    if (region == Region.other) {
-      final colorScheme = Theme.of(context).colorScheme;
-      return Container(
-        width: size,
-        height: size,
-        // a tint of the text color, so it shows on any background
-        decoration: BoxDecoration(color: colorScheme.onSurface.withValues(alpha: 0.1), borderRadius: borderRadius),
-        child: Icon(Icons.public_rounded, size: size * 2 / 3, color: colorScheme.onSurfaceVariant),
-      );
-    }
-    return CircleFlag(
-      // the lion and sun, as for the IP's country
-      region == Region.ir ? 'ir-shir' : region.name,
-      size: size,
-      shape: RoundedRectangleBorder(borderRadius: borderRadius),
-    );
-  }
-}
-
 /// App-based routing works through the Android VPN app list, so it sits above the rules and can't be moved.
 class _AppBasedRoutingSection extends ConsumerWidget {
   const _AppBasedRoutingSection();
