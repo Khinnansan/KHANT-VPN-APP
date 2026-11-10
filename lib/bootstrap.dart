@@ -22,6 +22,7 @@ import 'package:hiddify/features/chain/notifier/chain_profile_notifier.dart';
 import 'package:hiddify/features/connection/notifier/connection_notifier.dart';
 import 'package:hiddify/features/log/data/log_data_providers.dart';
 import 'package:hiddify/features/profile/data/profile_data_providers.dart';
+import 'package:hiddify/features/profile/model/profile_entity.dart';
 import 'package:hiddify/features/profile/notifier/active_profile_notifier.dart';
 import 'package:hiddify/features/proxy/active/active_proxy_notifier.dart';
 import 'package:hiddify/features/settings/data/config_option_repository.dart';
@@ -146,10 +147,37 @@ Future<void> lazyBootstrap(WidgetsBinding widgetsBinding, Environment env) async
     ),
   );
 
+  // Load the public KHANT VPN server list after the first frame so a slow
+  // network does not delay opening the app. upsertRemote updates the same URL
+  // instead of creating duplicate profiles on subsequent launches.
+  unawaited(_ensureKhantSubscription(container));
+
   if (!kIsWeb) {
     FlutterNativeSplash.remove();
   }
   // SentryFlutter.s(DateTime.now().toUtc());
+}
+
+
+const _khantSubscriptionUrl =
+    "https://raw.githubusercontent.com/Khinnansan/KHANT-VPN-APP/main/subscription/servers.txt";
+
+Future<void> _ensureKhantSubscription(ProviderContainer container) async {
+  try {
+    final repository = await container.read(profileRepositoryProvider.future);
+    final result = await repository
+        .upsertRemote(
+          _khantSubscriptionUrl,
+          userOverride: const UserOverride(name: "KHANT VPN Servers"),
+        )
+        .run();
+    result.match(
+      (failure) => Logger.bootstrap.error("KHANT server subscription load failed", failure),
+      (_) => Logger.bootstrap.info("KHANT server subscription loaded"),
+    );
+  } catch (error, stackTrace) {
+    Logger.bootstrap.error("KHANT server subscription load failed", error, stackTrace);
+  }
 }
 
 Future<T> _init<T>(String name, Future<T> Function() initializer, {int? timeout}) async {
