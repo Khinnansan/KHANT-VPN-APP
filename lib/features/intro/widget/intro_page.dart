@@ -23,7 +23,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 class IntroPage extends HookConsumerWidget with PresLogger {
   const IntroPage({super.key});
 
-  static bool locationInfoLoaded = false;
 
   // for focus management
   KeyEventResult _handleKeyEvent(KeyEvent event, String key) {
@@ -41,13 +40,6 @@ class IntroPage extends HookConsumerWidget with PresLogger {
     final theme = Theme.of(context);
 
     final isStarting = useState(false);
-
-    if (!locationInfoLoaded) {
-      autoSelectRegion(ref).then(
-        (value) => loggy.debug("Auto Region selection finished!"),
-      );
-      locationInfoLoaded = true;
-    }
 
     // for focus management
     final focusStates = <String, ValueNotifier<bool>>{
@@ -114,20 +106,6 @@ class IntroPage extends HookConsumerWidget with PresLogger {
                   ),
                   const Gap(24),
                   const LocalePrefTile(),
-                  ChoicePreferenceWidget(
-                    selected: ref.watch(ConfigOptions.region),
-                    preferences: ref.watch(ConfigOptions.region.notifier),
-                    choices: Region.values,
-                    title: t.pages.settings.routing.region,
-                    showFlag: true,
-                    icon: Icons.place_rounded,
-                    presentChoice: (value) => value.present(t),
-                    onChanged: (val) async {
-                      await ref
-                          .read(ConfigOptions.directDnsAddress.notifier)
-                          .reset();
-                    },
-                  ),
                   const EnableAnalyticsPrefTile(),
                   const Gap(24),
                   Focus(
