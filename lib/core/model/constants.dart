@@ -7,7 +7,7 @@ abstract class Constants {
   static const githubUrl = "https://github.com/Khinnansan/KHANT-VPN-APP";
   static const licenseUrl = "https://github.com/hiddify/hiddify-next?tab=License-1-ov-file#readme";
   static const githubReleasesApiUrl = "https://api.github.com/repos/hiddify/hiddify-next/releases";
-  static const githubLatestReleaseUrl = "https://github.com/hiddify/hiddify-app/releases/latest";
+  static const githubLatestReleaseUrl = "https://github.com/Khinnansan/KHANT-VPN-APP/releases/latest";
   static const appCastUrl = "https://raw.githubusercontent.com/hiddify/hiddify-next/main/appcast.xml";
   static const telegramChannelUrl = "https://t.me/hiddify";
   static const privacyPolicyUrl = "https://hiddify.com/privacy-policy/";
