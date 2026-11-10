@@ -16,7 +16,6 @@ import 'package:hiddify/core/model/region.dart';
 import 'package:hiddify/core/preferences/general_preferences.dart';
 import 'package:hiddify/features/common/general_pref_tiles.dart';
 import 'package:hiddify/features/settings/data/config_option_repository.dart';
-import 'package:hiddify/features/settings/widget/preference_tile.dart';
 import 'package:hiddify/utils/utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -108,50 +107,12 @@ class IntroPage extends HookConsumerWidget with PresLogger {
                   const LocalePrefTile(),
                   const EnableAnalyticsPrefTile(),
                   const Gap(24),
-                  Focus(
-                    focusNode:
-                        focusNodes[IntroConst.termsAndConditionsKey],
-                    onKeyEvent: (node, event) => _handleKeyEvent(
-                      event,
-                      IntroConst.termsAndConditionsKey,
-                    ),
-                    child: Text.rich(
-                      t.intro.termsAndPolicyCaution(
-                        tap: (text) => TextSpan(
-                          text: text,
-                          style: TextStyle(
-                            color: focusStates[
-                                        IntroConst.termsAndConditionsKey]!
-                                    .value
-                                ? Colors.green
-                                : Colors.blue,
-                          ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () async {
-                              await UriUtils.tryLaunch(
-                                Uri.parse(Constants.termsAndConditionsUrl),
-                              );
-                            },
-                        ),
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      t.intro.termsAndPolicyCaution,
                       style: theme.textTheme.bodySmall,
-                    ),
-                  ),
-                  const Gap(8),
-                  Focus(
-                    focusNode: focusNodes[IntroConst.privacyPolicyKey],
-                    onKeyEvent: (node, event) => _handleKeyEvent(
-                      event,
-                      IntroConst.privacyPolicyKey,
-                    ),
-                    child: TextButton.icon(
-                      onPressed: () async {
-                        await UriUtils.tryLaunch(
-                          Uri.parse(Constants.privacyPolicyUrl),
-                        );
-                      },
-                      icon: const Icon(Icons.privacy_tip_outlined),
-                      label: Text(t.pages.about.privacyPolicy),
+                      textAlign: TextAlign.center,
                     ),
                   ),
                   const Gap(8),
