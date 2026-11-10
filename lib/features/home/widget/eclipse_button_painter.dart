@@ -221,13 +221,13 @@ void _connected(_Ctx x) {
   final up = traffic.up * appear;
 
   x.glow(
-    color: const Color(0xFFFFC857),
+    color: const Color(0xFF25D366),
     level: down,
     reach: .8,
   );
 
   x.glow(
-    color: const Color(0xFFFFE6A6),
+    color: const Color(0xFF9BFFB5),
     level: up,
     reach: 1.1,
   );
