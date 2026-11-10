@@ -110,7 +110,9 @@ class IntroPage extends HookConsumerWidget with PresLogger {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
-                      t.intro.termsAndPolicyCaution,
+                      t.intro.termsAndPolicyCaution(
+                        tap: (_) => const TextSpan(),
+                      ),
                       style: theme.textTheme.bodySmall,
                       textAlign: TextAlign.center,
                     ),
