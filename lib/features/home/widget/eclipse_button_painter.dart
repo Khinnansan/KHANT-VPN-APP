@@ -739,7 +739,7 @@ class _Ctx {
       path,
       Paint()
         ..style = PaintingStyle.stroke
-        ..strokeWidth = math.max(1.0, k * 1.15)
+        ..strokeWidth = k * 1.15
         ..color = const Color(0xFFFFE7A0).withValues(alpha: .72 * opacity)
         ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 2.2),
     );
