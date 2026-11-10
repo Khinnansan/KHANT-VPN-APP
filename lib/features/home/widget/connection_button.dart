@@ -416,7 +416,55 @@ class _ConnectionButton extends HookWidget {
           upload: upload,
           connected: look == _Look.connected,
         ),
+        if (look == _Look.connected) ...[
+          const Gap(12),
+          _ConnectionDurationCard(),
+        ],
       ],
+    );
+  }
+}
+
+class _ConnectionDurationCard extends HookWidget {
+  const _ConnectionDurationCard();
+
+  @override
+  Widget build(BuildContext context) {
+    final elapsed = useState(Duration.zero);
+    final stopwatch = useMemoized(() => Stopwatch());
+    useEffect(() {
+      stopwatch
+        ..reset()
+        ..start();
+      final timer = Timer.periodic(const Duration(seconds: 1), (_) {
+        elapsed.value = stopwatch.elapsed;
+      });
+      return () {
+        timer.cancel();
+        stopwatch.stop();
+      };
+    }, const []);
+    String two(int value) => value.toString().padLeft(2, '0');
+    final duration = elapsed.value;
+    final label = '${two(duration.inHours)}:${two(duration.inMinutes.remainder(60))}:${two(duration.inSeconds.remainder(60))}';
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
+      decoration: BoxDecoration(
+        color: const Color(0xFF100E0B),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: const Color(0xFFFFC857).withValues(alpha: .28)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.timer_outlined, color: Color(0xFFFFC857), size: 20),
+          const Gap(10),
+          const Text('Connection time', style: TextStyle(color: Colors.white70, fontSize: 12)),
+          const Gap(10),
+          Text(label, style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700, fontFeatures: [FontFeature.tabularFigures()])),
+        ],
+      ),
     );
   }
 }
