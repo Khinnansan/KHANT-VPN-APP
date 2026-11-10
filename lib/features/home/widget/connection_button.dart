@@ -15,6 +15,7 @@ import 'package:hiddify/features/connection/notifier/connection_notifier.dart';
 import 'package:hiddify/features/home/widget/eclipse_button_painter.dart';
 import 'package:hiddify/features/profile/notifier/active_profile_notifier.dart';
 import 'package:hiddify/features/proxy/active/active_proxy_notifier.dart';
+import 'package:hiddify/features/proxy/model/proxy_entity.dart';
 import 'package:hiddify/features/stats/notifier/stats_notifier.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
