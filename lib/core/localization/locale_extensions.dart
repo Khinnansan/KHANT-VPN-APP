@@ -11,6 +11,7 @@ extension AppLocaleX on AppLocale {
   String get localeName => switch (flutterLocale.toString()) {
     "ar" => "العربية",
     "en" => "English",
+    "my" => "မြန်မာ",
     "es" => "Spanish",
     "fa" => "فارسی",
     "fr" => "Français",
