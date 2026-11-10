@@ -173,6 +173,7 @@ void _paintLook(_Ctx x) {
   switch (x.f.look) {
     case EclipseLook.idle:
       x.globe(connected: false);
+      x.orbit(x.f.time, connected: false);
       x.disc();
       x.goldRing();
       x.logo();
