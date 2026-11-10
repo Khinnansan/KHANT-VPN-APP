@@ -92,6 +92,9 @@ class ConnectionButton extends HookConsumerWidget {
       errorDetailsLabel: t.connection.errorDetails,
       download: stats?.downlink.toInt() ?? 0,
       upload: stats?.uplink.toInt() ?? 0,
+      totalDownload: stats?.downlinkTotal.toInt() ?? 0,
+      totalUpload: stats?.uplinkTotal.toInt() ?? 0,
+      trafficAvailable: stats?.trafficAvailable ?? false,
       countryCode: countryCode,
       ping: ping,
       label: switch (look) {
@@ -178,6 +181,9 @@ class _ConnectionButton extends HookWidget {
     required this.errorDetailsLabel,
     required this.download,
     required this.upload,
+    required this.totalDownload,
+    required this.totalUpload,
+    required this.trafficAvailable,
     required this.countryCode,
     required this.ping,
     required this.label,
@@ -190,6 +196,9 @@ class _ConnectionButton extends HookWidget {
   final String errorDetailsLabel;
   final int download;
   final int upload;
+  final int totalDownload;
+  final int totalUpload;
+  final bool trafficAvailable;
   final String? countryCode;
   final int ping;
   final String label;
@@ -419,6 +428,12 @@ class _ConnectionButton extends HookWidget {
         if (look == _Look.connected) ...[
           const Gap(12),
           _ConnectionDurationCard(),
+          const Gap(8),
+          _DataUsageCard(
+            download: totalDownload,
+            upload: totalUpload,
+            available: trafficAvailable,
+          ),
         ],
       ],
     );
@@ -465,6 +480,153 @@ class _ConnectionDurationCard extends HookWidget {
           Text(label, style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700)),
         ],
       ),
+    );
+  }
+}
+
+class _DataUsageCard extends StatelessWidget {
+  const _DataUsageCard({
+    required this.download,
+    required this.upload,
+    required this.available,
+  });
+
+  final int download;
+  final int upload;
+  final bool available;
+
+  static const _gold = Color(0xFFFFC857);
+  static const _muted = Color(0xFFBDB5A8);
+
+  String _formatBytes(int bytes) {
+    final value = bytes < 0 ? 0.0 : bytes.toDouble();
+    if (value >= 1024 * 1024 * 1024) {
+      return '${(value / (1024 * 1024 * 1024)).toStringAsFixed(2)} GB';
+    }
+    if (value >= 1024 * 1024) {
+      return '${(value / (1024 * 1024)).toStringAsFixed(2)} MB';
+    }
+    if (value >= 1024) {
+      return '${(value / 1024).toStringAsFixed(2)} KB';
+    }
+    return '${value.toStringAsFixed(0)} B';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final total = download + upload;
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: const Color(0xFF100E0B),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: _gold.withValues(alpha: .28)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.data_usage_rounded, color: _gold, size: 18),
+              const Gap(8),
+              const Text(
+                'DATA USED',
+                style: TextStyle(
+                  color: _gold,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 1.2,
+                ),
+              ),
+              const Spacer(),
+              Text(
+                available ? _formatBytes(total) : 'Unavailable',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
+          ),
+          const Gap(10),
+          Row(
+            children: [
+              Expanded(
+                child: _DataUsageValue(
+                  icon: Icons.arrow_downward_rounded,
+                  label: 'Download',
+                  value: available ? _formatBytes(download) : '—',
+                ),
+              ),
+              Container(
+                width: 1,
+                height: 34,
+                color: _gold.withValues(alpha: .25),
+              ),
+              const Gap(12),
+              Expanded(
+                child: _DataUsageValue(
+                  icon: Icons.arrow_upward_rounded,
+                  label: 'Upload',
+                  value: available ? _formatBytes(upload) : '—',
+                ),
+              ),
+            ],
+          ),
+          if (!available) ...[
+            const Gap(6),
+            const Text(
+              'Traffic statistics are not available from the core yet.',
+              style: TextStyle(color: _muted, fontSize: 10),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _DataUsageValue extends StatelessWidget {
+  const _DataUsageValue({
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
+
+  final IconData icon;
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(icon, color: const Color(0xFFFFD77D), size: 17),
+        const Gap(6),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                value,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              Text(
+                label,
+                style: const TextStyle(color: Color(0xFFBDB5A8), fontSize: 10),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
