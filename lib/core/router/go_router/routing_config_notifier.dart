@@ -28,6 +28,7 @@ import 'package:hiddify/features/settings/overview/sections/inbound_options_page
 import 'package:hiddify/features/settings/overview/sections/routing_options_page.dart';
 import 'package:hiddify/features/settings/overview/sections/tls_tricks_page.dart';
 import 'package:hiddify/features/settings/overview/settings_page.dart';
+import 'package:hiddify/features/stats/widget/statistics_page.dart';
 import 'package:hiddify/utils/utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -36,6 +37,8 @@ part 'routing_config_notifier.g.dart';
 // each branch in go router has its own focus scope
 final branchesScope = <String, FocusScopeNode>{
   'home': FocusScopeNode(),
+  'servers': FocusScopeNode(),
+  'statistics': FocusScopeNode(),
   'profiles': FocusScopeNode(),
   'settings': FocusScopeNode(),
   'logs': FocusScopeNode(),
@@ -48,11 +51,11 @@ final loadingConfig = RoutingConfig(
 );
 
 String getNameOfBranch(bool isMobileBreakpoint, bool showProfilesAction, int index) => isMobileBreakpoint
-    ? ['home', 'settings'][index]
+    ? ['home', 'servers', 'statistics', 'settings'][index]
     : ['home', if (showProfilesAction) 'profiles', 'settings', 'logs', 'about'][index];
 
 int getIndexOfBranch(bool isMobileBreakpoint, bool showProfilesAction, String name) => isMobileBreakpoint
-    ? ['home', 'settings'].indexOf(name)
+    ? ['home', 'servers', 'statistics', 'settings'].indexOf(name)
     : ['home', if (showProfilesAction) 'profiles', 'settings', 'logs', 'about'].indexOf(name);
 
 @Riverpod(keepAlive: true)
@@ -148,6 +151,32 @@ class RoutingConfigNotifier extends _$RoutingConfigNotifier {
                 ),
               ],
             ),
+            if (isMobileBreakpoint)
+              StatefulShellBranch(
+                routes: <GoRoute>[
+                  GoRoute(
+                    name: 'servers',
+                    path: '/servers',
+                    builder: (_, _) => FocusScope(
+                      node: branchesScope['servers'],
+                      child: const ProxiesOverviewPage(),
+                    ),
+                  ),
+                ],
+              ),
+            if (isMobileBreakpoint)
+              StatefulShellBranch(
+                routes: <GoRoute>[
+                  GoRoute(
+                    name: 'statistics',
+                    path: '/statistics',
+                    builder: (_, _) => FocusScope(
+                      node: branchesScope['statistics'],
+                      child: const StatisticsPage(),
+                    ),
+                  ),
+                ],
+              ),
             if (showProfilesAction)
               StatefulShellBranch(
                 routes: <GoRoute>[
