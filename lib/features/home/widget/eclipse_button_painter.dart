@@ -681,6 +681,11 @@ class _Ctx {
         )),
     );
 
+    final logoBounds = Rect.fromCenter(
+      center: center,
+      width: r * .9,
+      height: r * .9,
+    );
     c.drawPath(
       path,
       Paint()
@@ -688,17 +693,55 @@ class _Ctx {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            goldLight.withValues(alpha: opacity),
-            color.withValues(alpha: opacity),
-            goldDark.withValues(alpha: opacity),
+            const Color(0xFFFFF6C7).withValues(alpha: opacity),
+            const Color(0xFFFFD75E).withValues(alpha: opacity),
+            const Color(0xFFE39A16).withValues(alpha: opacity),
+            const Color(0xFFFFE9A0).withValues(alpha: opacity),
+            const Color(0xFF9C5B08).withValues(alpha: opacity),
           ],
-        ).createShader(
-          Rect.fromCenter(
-            center: center,
-            width: r * .9,
-            height: r * .9,
-          ),
+          stops: const [0, .22, .48, .72, 1],
+        ).createShader(logoBounds),
+    );
+
+    // A soft metallic highlight travels across the K without changing its
+    // silhouette. The bright edge gives the gold mark a polished, reflective finish.
+    final shine = .5 + .5 * math.sin(t * .85);
+    final shineCenter = Offset(
+      center.dx + (shine - .5) * r * 1.15,
+      center.dy - r * .08,
+    );
+    final shineRect = Rect.fromCenter(
+      center: shineCenter,
+      width: r * .34,
+      height: r * 1.25,
+    );
+    c.save();
+    c.clipPath(path);
+    c.drawRect(
+      Rect.fromCircle(center: center, radius: r),
+      Paint()
+        ..shader = ui.Gradient.linear(
+          Offset(shineRect.left, shineRect.bottom),
+          Offset(shineRect.right, shineRect.top),
+          [
+            Colors.white.withValues(alpha: 0),
+            const Color(0xFFFFF6D5).withValues(alpha: .08 * opacity),
+            const Color(0xFFFFFFFF).withValues(alpha: .42 * opacity),
+            const Color(0xFFFFE9A0).withValues(alpha: .12 * opacity),
+            Colors.white.withValues(alpha: 0),
+          ],
+          const [0, .35, .5, .65, 1],
         ),
+    );
+    c.restore();
+
+    c.drawPath(
+      path,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = k * 1.15
+        ..color = const Color(0xFFFFE7A0).withValues(alpha: .72 * opacity)
+        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 2.2),
     );
 
     c.restore();

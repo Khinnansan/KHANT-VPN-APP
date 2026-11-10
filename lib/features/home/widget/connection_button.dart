@@ -517,11 +517,18 @@ class _DataUsageCard extends StatelessWidget {
     final total = download + upload;
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.fromLTRB(15, 13, 15, 14),
       decoration: BoxDecoration(
         color: const Color(0xFF100E0B),
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: _gold.withValues(alpha: .28)),
+        border: Border.all(color: _gold.withValues(alpha: .42)),
+        boxShadow: [
+          BoxShadow(
+            color: _gold.withValues(alpha: .055),
+            blurRadius: 16,
+            spreadRadius: 1,
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -540,45 +547,49 @@ class _DataUsageCard extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              Text(
-                available ? _formatBytes(total) : 'Unavailable',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700,
-                ),
+              Icon(
+                available ? Icons.check_circle_outline_rounded : Icons.info_outline_rounded,
+                color: available ? Colors.greenAccent : _muted,
+                size: 17,
               ),
             ],
           ),
-          const Gap(10),
+          const Gap(13),
           Row(
             children: [
               Expanded(
                 child: _DataUsageValue(
-                  icon: Icons.arrow_downward_rounded,
+                  icon: Icons.south_rounded,
                   label: 'Download',
                   value: available ? _formatBytes(download) : '—',
                 ),
               ),
-              Container(
-                width: 1,
-                height: 34,
-                color: _gold.withValues(alpha: .25),
-              ),
-              const Gap(12),
+              Container(width: 1, height: 42, color: _gold.withValues(alpha: .28)),
+              const Gap(9),
               Expanded(
                 child: _DataUsageValue(
-                  icon: Icons.arrow_upward_rounded,
+                  icon: Icons.north_rounded,
                   label: 'Upload',
                   value: available ? _formatBytes(upload) : '—',
+                ),
+              ),
+              const Gap(9),
+              Container(width: 1, height: 42, color: _gold.withValues(alpha: .28)),
+              const Gap(9),
+              Expanded(
+                child: _DataUsageValue(
+                  icon: Icons.database_outlined,
+                  label: 'Total',
+                  value: available ? _formatBytes(total) : '—',
+                  emphasize: true,
                 ),
               ),
             ],
           ),
           if (!available) ...[
-            const Gap(6),
+            const Gap(8),
             const Text(
-              'Traffic statistics are not available from the core yet.',
+              'Waiting for traffic data from the VPN core.',
               style: TextStyle(color: _muted, fontSize: 10),
             ),
           ],
@@ -593,37 +604,42 @@ class _DataUsageValue extends StatelessWidget {
     required this.icon,
     required this.label,
     required this.value,
+    this.emphasize = false,
   });
 
   final IconData icon;
   final String label;
   final String value;
+  final bool emphasize;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, color: const Color(0xFFFFD77D), size: 17),
-        const Gap(6),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                value,
+        Row(
+          children: [
+            Icon(icon, color: const Color(0xFFFFD77D), size: 16),
+            const Gap(5),
+            Flexible(
+              child: Text(
+                label,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              Text(
-                label,
                 style: const TextStyle(color: Color(0xFFBDB5A8), fontSize: 10),
               ),
-            ],
+            ),
+          ],
+        ),
+        const Gap(7),
+        Text(
+          value,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            color: emphasize ? const Color(0xFFFFC857) : Colors.white,
+            fontSize: 12,
+            fontWeight: FontWeight.w800,
           ),
         ),
       ],

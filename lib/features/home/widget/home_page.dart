@@ -8,7 +8,6 @@ import 'package:hiddify/core/router/bottom_sheets/bottom_sheets_notifier.dart';
 import 'package:hiddify/features/home/widget/connection_button.dart';
 import 'package:hiddify/features/profile/notifier/active_profile_notifier.dart';
 import 'package:hiddify/features/profile/widget/profile_tile.dart';
-import 'package:hiddify/features/proxy/active/active_proxy_card.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
@@ -250,18 +249,6 @@ class HomePage extends HookConsumerWidget {
                                   ),
                                 ),
                                 const Spacer(flex: 2),
-                                Container(
-                                  width: double.infinity,
-                                  padding: const EdgeInsets.all(13),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFF12110E),
-                                    borderRadius: BorderRadius.circular(17),
-                                    border: Border.all(
-                                      color: _gold.withValues(alpha: .20),
-                                    ),
-                                  ),
-                                  child: const ActiveProxyFooter(),
-                                ),
                                 const Gap(24),
                               ],
                             ),
