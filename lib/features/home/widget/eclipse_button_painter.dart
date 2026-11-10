@@ -172,12 +172,14 @@ class EclipseButtonPainter extends CustomPainter {
 void _paintLook(_Ctx x) {
   switch (x.f.look) {
     case EclipseLook.idle:
+      x.globe(connected: false);
       x.disc();
       x.goldRing();
       x.logo();
       break;
 
     case EclipseLook.starting:
+      x.globe(connected: false);
       x.disc();
       x.goldRing();
       x.logo(pulse: true);
@@ -185,6 +187,7 @@ void _paintLook(_Ctx x) {
       break;
 
     case EclipseLook.waiting:
+      x.globe(connected: false);
       x.disc();
       x.goldRing();
       x.radar();
@@ -210,26 +213,26 @@ void _paintLook(_Ctx x) {
 void _connected(_Ctx x) {
   final s = x.f.since;
   final traffic = x.p.traffic;
+  // Keep the connected state visibly alive even when traffic is momentarily zero.
+  final pulse = .72 + .28 * (.5 + .5 * math.sin(s * 2.2));
+  final activity = math.max(traffic.down, traffic.up);
 
-  final appear = _ease((s - .4) / 1.2);
-  final down = traffic.down * appear;
-  final up = traffic.up * appear;
-
+  x.globe(connected: true);
   x.glow(
-    color: const Color(0xFF25D366),
-    level: down,
-    reach: .8,
+    color: const Color(0xFF20F45A),
+    level: pulse,
+    reach: 1.18,
   );
-
   x.glow(
     color: const Color(0xFF9BFFB5),
-    level: up,
-    reach: 1.1,
+    level: math.max(.24, activity) * pulse,
+    reach: 1.35,
   );
 
+  x.orbit(s, connected: true);
   x.ripple(s);
   x.disc();
-  x.goldRing(strength: .5 + .5 * math.max(down, up));
+  x.goldRing(strength: .85 + .15 * pulse);
 
   x.logo(
     pulse: true,
@@ -286,6 +289,94 @@ class _Ctx {
   static const gold = Color(0xFFFFC857);
   static const goldLight = Color(0xFFFFE6A6);
   static const goldDark = Color(0xFF9C6418);
+
+  // Decorative dotted world map and orbital paths behind the connection core.
+  void globe({required bool connected}) {
+    final pulse = .82 + .18 * math.sin(f.time * 1.25);
+    final color = connected
+        ? const Color(0xFF65FF45)
+        : const Color(0xFFFFC857);
+    final globeRadius = r * 1.58;
+    final centerY = center.dy - r * .16;
+    final mapCenter = Offset(center.dx, centerY);
+
+    c.drawOval(
+      Rect.fromCenter(
+        center: mapCenter,
+        width: globeRadius * 2.05,
+        height: globeRadius * 1.18,
+      ),
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.1
+        ..color = color.withValues(alpha: .23 * pulse),
+    );
+
+    // Stylized continent clusters made from glowing dots.
+    const continents = <List<Offset>>[
+      [Offset(-.78,-.05),Offset(-.70,-.25),Offset(-.58,-.32),Offset(-.48,-.22),Offset(-.43,-.02),Offset(-.52,.12),Offset(-.60,.30),Offset(-.73,.20)],
+      [Offset(-.35,-.42),Offset(-.20,-.50),Offset(-.05,-.42),Offset(-.10,-.25),Offset(-.22,-.18),Offset(-.32,-.25)],
+      [Offset(-.20,.02),Offset(-.08,.12),Offset(-.02,.32),Offset(-.12,.55),Offset(-.24,.42),Offset(-.30,.18)],
+      [Offset(.02,-.42),Offset(.22,-.48),Offset(.40,-.36),Offset(.52,-.18),Offset(.40,-.04),Offset(.22,-.12),Offset(.12,.02),Offset(-.02,-.12)],
+      [Offset(.28,.08),Offset(.45,.12),Offset(.52,.30),Offset(.42,.48),Offset(.28,.40),Offset(.20,.22)],
+      [Offset(.60,-.20),Offset(.75,-.12),Offset(.82,.02),Offset(.72,.12),Offset(.60,.02)],
+    ];
+
+    for (final continent in continents) {
+      for (final point in continent) {
+        final at = Offset(
+          mapCenter.dx + point.dx * globeRadius,
+          mapCenter.dy + point.dy * globeRadius,
+        );
+        c.drawCircle(
+          at,
+          math.max(1.0, r * .018),
+          Paint()..color = color.withValues(alpha: .68 * pulse),
+        );
+        if (connected && (point.dx + point.dy).abs() > .65) {
+          c.drawCircle(
+            at,
+            r * .045,
+            Paint()
+              ..color = color.withValues(alpha: .16)
+              ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5),
+          );
+        }
+      }
+    }
+  }
+
+  void orbit(double time, {required bool connected}) {
+    final color = connected
+        ? const Color(0xFF35FF45)
+        : gold;
+    final rect = Rect.fromCenter(
+      center: center,
+      width: r * 3.05,
+      height: r * .78,
+    );
+    c.save();
+    c.rotate(-.06);
+    c.drawOval(
+      rect,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = connected ? 2.2 : 1.2
+        ..color = color.withValues(alpha: connected ? .85 : .34),
+    );
+    final angle = time * (connected ? 1.1 : .25);
+    final dot = center + Offset.fromDirection(angle, r * 1.5);
+    c.drawCircle(
+      dot,
+      connected ? 3.5 : 2.2,
+      Paint()
+        ..color = color
+        ..maskFilter = connected
+            ? const MaskFilter.blur(BlurStyle.normal, 5)
+            : null,
+    );
+    c.restore();
+  }
 
   void disc() {
     final rect = Rect.fromCircle(
@@ -398,17 +489,28 @@ class _Ctx {
     final k = r * .012;
 
     final path = Path()
-      ..moveTo(center.dx - 20 * k, center.dy - 32 * k)
-      ..lineTo(center.dx - 8 * k, center.dy - 32 * k)
-      ..lineTo(center.dx - 8 * k, center.dy - 6 * k)
-      ..lineTo(center.dx + 17 * k, center.dy - 32 * k)
-      ..lineTo(center.dx + 32 * k, center.dy - 32 * k)
-      ..lineTo(center.dx + 4 * k, center.dy - 2 * k)
-      ..lineTo(center.dx + 32 * k, center.dy + 32 * k)
-      ..lineTo(center.dx + 17 * k, center.dy + 32 * k)
-      ..lineTo(center.dx - 8 * k, center.dy + 5 * k)
-      ..lineTo(center.dx - 8 * k, center.dy + 32 * k)
-      ..lineTo(center.dx - 20 * k, center.dy + 32 * k)
+      ..moveTo(center.dx - 20 * k, center.dy - 24 * k)
+      ..lineTo(center.dx - 8 * k, center.dy - 24 * k)
+      ..lineTo(center.dx - 8 * k, center.dy - 5 * k)
+      ..lineTo(center.dx + 17 * k, center.dy - 25 * k)
+      ..lineTo(center.dx + 33 * k, center.dy - 25 * k)
+      ..lineTo(center.dx + 4 * k, center.dy + 1 * k)
+      ..lineTo(center.dx + 32 * k, center.dy + 28 * k)
+      ..lineTo(center.dx + 17 * k, center.dy + 28 * k)
+      ..lineTo(center.dx - 8 * k, center.dy + 7 * k)
+      ..lineTo(center.dx - 8 * k, center.dy + 28 * k)
+      ..lineTo(center.dx - 20 * k, center.dy + 28 * k)
+      ..close();
+
+    // Small crown above the K, matching the KHANT premium mark.
+    final crown = Path()
+      ..moveTo(center.dx - 11 * k, center.dy - 31 * k)
+      ..lineTo(center.dx - 15 * k, center.dy - 43 * k)
+      ..lineTo(center.dx - 5 * k, center.dy - 36 * k)
+      ..lineTo(center.dx, center.dy - 47 * k)
+      ..lineTo(center.dx + 6 * k, center.dy - 36 * k)
+      ..lineTo(center.dx + 15 * k, center.dy - 43 * k)
+      ..lineTo(center.dx + 11 * k, center.dy - 31 * k)
       ..close();
 
     c.drawPath(
@@ -420,6 +522,24 @@ class _Ctx {
           10,
         ),
     );
+
+    c.drawPath(
+      crown,
+      Paint()
+        ..shader = const LinearGradient(
+          colors: [Color(0xFFFFF0A8), Color(0xFFFFC32B), Color(0xFFB87508)],
+        ).createShader(Rect.fromCenter(
+          center: center.translate(0, -39 * k),
+          width: 32 * k,
+          height: 20 * k,
+        )),
+    );
+    c.drawCircle(center.translate(-15 * k, -43 * k), 2.2 * k,
+        Paint()..color = goldLight);
+    c.drawCircle(center.translate(15 * k, -43 * k), 2.2 * k,
+        Paint()..color = goldLight);
+    c.drawCircle(center.translate(0, -47 * k), 2.2 * k,
+        Paint()..color = goldLight);
 
     c.drawPath(
       path,
