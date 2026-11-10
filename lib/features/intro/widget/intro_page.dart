@@ -7,14 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
-import 'package:hiddify/core/analytics/analytics_controller.dart';
 import 'package:hiddify/core/http_client/dio_http_client.dart';
+import 'package:hiddify/core/analytics/analytics_controller.dart';
 import 'package:hiddify/core/localization/locale_preferences.dart';
 import 'package:hiddify/core/localization/translations.dart';
 import 'package:hiddify/core/model/constants.dart';
 import 'package:hiddify/core/model/region.dart';
 import 'package:hiddify/core/preferences/general_preferences.dart';
-import 'package:hiddify/features/common/general_pref_tiles.dart';
 import 'package:hiddify/features/settings/data/config_option_repository.dart';
 import 'package:hiddify/utils/utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -77,14 +76,13 @@ class IntroPage extends HookConsumerWidget with PresLogger {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  const Gap(28),
                   LayoutBuilder(
                     builder: (context, constraints) {
-                      final width =
-                          constraints.maxWidth > IntroConst.maxwidth
-                              ? IntroConst.maxwidth
-                              : constraints.maxWidth;
-                      final size = width * 0.4;
-
+                      final width = constraints.maxWidth > IntroConst.maxwidth
+                          ? IntroConst.maxwidth
+                          : constraints.maxWidth;
+                      final size = width * 0.38;
                       return Image.asset(
                         'assets/images/khant_vpn_icon.png',
                         width: size,
@@ -93,129 +91,156 @@ class IntroPage extends HookConsumerWidget with PresLogger {
                       );
                     },
                   ),
-                  const Gap(16),
+                  const Gap(12),
+                  Text(
+                    'KHANT VPN',
+                    style: theme.textTheme.headlineMedium?.copyWith(
+                      color: const Color(0xFFFFD36A),
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 2.2,
+                    ),
+                  ),
+                  const Gap(6),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
                       t.intro.banner,
-                      style: theme.textTheme.bodyLarge,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        color: Colors.white70,
+                        letterSpacing: 1.4,
+                      ),
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
                     ),
                   ),
-                  const Gap(24),
-                  const LocalePrefTile(),
-                  const EnableAnalyticsPrefTile(),
+                  const Gap(34),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF17120B),
+                      borderRadius: BorderRadius.circular(18),
+                      border: Border.all(color: const Color(0xFF9B7130), width: 1.2),
+                    ),
+                    child: const LocalePrefTile(),
+                  ),
                   const Gap(24),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Text.rich(
-                      t.intro.termsAndPolicyCaution(
-                        tap: (text) => TextSpan(
-                          text: text,
-                          style: const TextStyle(
-                            color: Colors.blue,
-                            decoration: TextDecoration.underline,
+                    padding: const EdgeInsets.symmetric(horizontal: 28),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(top: 2, right: 12),
+                          child: Icon(
+                            Icons.check_box_rounded,
+                            color: Color(0xFFFFC857),
+                            size: 28,
                           ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () async {
-                              await UriUtils.tryLaunch(
-                                Uri.parse(
-                                  IntroConst.url[IntroConst.termsAndConditionsKey]!,
-                                ),
-                              );
-                            },
                         ),
-                      ),
-                      style: theme.textTheme.bodySmall,
-                      textAlign: TextAlign.center,
+                        Expanded(
+                          child: Text.rich(
+                            t.intro.termsAndPolicyCaution(
+                              tap: (text) => TextSpan(
+                                text: text,
+                                style: const TextStyle(
+                                  color: Color(0xFFFFD36A),
+                                  decoration: TextDecoration.underline,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () async {
+                                    await UriUtils.tryLaunch(
+                                      Uri.parse(IntroConst.url[IntroConst.termsAndConditionsKey]!),
+                                    );
+                                  },
+                              ),
+                            ),
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: Colors.white,
+                              height: 1.6,
+                            ),
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  const Gap(8),
+                  const Gap(28),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 24),
+                    height: 1,
+                    color: const Color(0xFF8D6428),
+                  ),
+                  const Gap(18),
                   Focus(
                     focusNode: focusNodes[IntroConst.githubKey],
-                    onKeyEvent: (node, event) => _handleKeyEvent(
-                      event,
-                      IntroConst.githubKey,
-                    ),
+                    onKeyEvent: (node, event) => _handleKeyEvent(event, IntroConst.githubKey),
                     child: Text.rich(
                       t.intro.info(
                         tap_source: (text) => TextSpan(
                           text: text,
-                          style: TextStyle(
-                            color: focusStates[IntroConst.githubKey]!.value
-                                ? Colors.green
-                                : Colors.blue,
+                          style: const TextStyle(
+                            color: Color(0xFFFFD36A),
+                            decoration: TextDecoration.underline,
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () async {
-                              await UriUtils.tryLaunch(
-                                Uri.parse(Constants.githubUrl),
-                              );
+                              await UriUtils.tryLaunch(Uri.parse(Constants.githubUrl));
                             },
                         ),
                         tap_license: (text) => TextSpan(
                           text: text,
-                          style: TextStyle(
-                            color: focusStates[IntroConst.githubKey]!.value
-                                ? Colors.green
-                                : Colors.blue,
+                          style: const TextStyle(
+                            color: Color(0xFFFFD36A),
+                            decoration: TextDecoration.underline,
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () async {
-                              await UriUtils.tryLaunch(
-                                Uri.parse(Constants.licenseUrl),
-                              );
+                              await UriUtils.tryLaunch(Uri.parse(Constants.licenseUrl));
                             },
                         ),
                       ),
-                      style: theme.textTheme.bodySmall,
+                      style: theme.textTheme.bodyMedium?.copyWith(color: Colors.white70),
+                      textAlign: TextAlign.center,
                     ),
                   ),
-                  // only for managing license node focus
                   Focus(
                     focusNode: focusNodes[IntroConst.licenseKey],
-                    onKeyEvent: (node, event) => _handleKeyEvent(
-                      event,
-                      IntroConst.licenseKey,
-                    ),
+                    onKeyEvent: (node, event) => _handleKeyEvent(event, IntroConst.licenseKey),
                     child: const Gap(88),
                   ),
-                ],
+                ],,
               ),
             ),
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: const Color(0xFFFFC857),
+        foregroundColor: const Color(0xFF211606),
         icon: isStarting.value
             ? const SizedBox(
                 width: 24,
                 height: 24,
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(color: Color(0xFF211606)),
               )
-            : const Icon(Icons.rocket_launch),
+            : const Icon(Icons.rocket_launch_rounded),
         label: Text(
           t.common.start,
-          style: theme.textTheme.titleMedium,
+          style: theme.textTheme.titleMedium?.copyWith(
+            color: const Color(0xFF211606),
+            fontWeight: FontWeight.bold,
+          ),
         ),
         onPressed: () async {
           if (isStarting.value) return;
           isStarting.value = true;
 
-          if (!ref.read(analyticsControllerProvider).requireValue) {
-            loggy.info("disabling analytics per user request");
-            try {
-              await ref
-                  .read(analyticsControllerProvider.notifier)
-                  .disableAnalytics();
-            } catch (error, stackTrace) {
-              loggy.error(
-                "could not disable analytics",
-                error,
-                stackTrace,
-              );
-            }
+          // KHANT VPN Intro does not offer analytics opt-in; keep diagnostics disabled.
+          try {
+            await ref.read(analyticsControllerProvider.notifier).disableAnalytics();
+          } catch (error, stackTrace) {
+            loggy.error("could not disable analytics", error, stackTrace);
           }
 
           await ref
