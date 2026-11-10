@@ -578,7 +578,7 @@ class _DataUsageCard extends StatelessWidget {
               const Gap(9),
               Expanded(
                 child: _DataUsageValue(
-                  icon: Icons.database_outlined,
+                  icon: Icons.storage_rounded,
                   label: 'Total',
                   value: available ? _formatBytes(total) : '—',
                   emphasize: true,
