@@ -1,8 +1,4 @@
-vless://f69c58a8-0e64-448d-a0f2-6c84c74fd109@v2.nooend.me:2083?path=%2Fvless&security=tls&encryption=none&type=ws&sni=v2.nooend.me#%F0%9F%9A%80%20Marz%20%28khant_5416951861%29%20%5BVLESS%20-%20ws%5
-vmess://eyJhZGQiOiJ2Mi5ub29lbmQubWUiLCJhaWQiOiIwIiwiYWxwbiI6IiIsImZwIjoiIiwiaG9zdCI6IiIsImlkIjoiODAyMjAzMWItYjcyMy00ODQ0LWI5NGYtNjk0NTkxYmEwY2ViIiwibmV0Ijoid3MiLCJwYXRoIjoiL3ZtZXNzIiwicG9ydCI6Ijg0NDMiLCJwcyI6IvCfmoAgTWFyeiAoa2hhbnRfNTQxNjk1MTg2MSkgW1ZNZXNzIC0gd3NdIiwic2N5IjoiYXV0byIsInNuaSI6InYyLm5vb2VuZC5tZSIsInRscyI6InRscyIsInR5cGUiOiIiLCJ2IjoiMiJ9
-trojan://j72NVQuSiI8GgouCX9QJsw@v2.nooend.me:2053?security=tls&headerType=none&type=tcp&sni=v2.nooend.me#%F0%9F%9A%80%20Marz%20%28khant_5416951861%29%20%5BTrojan%20-%20tcp%5D
-vmess://eyJhZGQiOiJ2Mi5ub29lbmQubWUiLCJhaWQiOiIwIiwiYWxwbiI6IiIsImZwIjoiIiwiaG9zdCI6InBvcnRhbC1hcy5ydWlqaWVuZXR3b3Jrcy5jb20iLCJpZCI6IjgwMjIwMzFiLWI3MjMtNDg0NC1iOTRmLTY5NDU5MWJhMGNlYiIsIm5ldCI6IndzIiwicGF0aCI6Ii92bWVzczgwIiwicG9ydCI6IjgwIiwicHMiOiLwn5qAIE1hcnogKGtoYW50XzU0MTY5NTE4NjEpIFtWTWVzcyAtIHdzXSIsInNjeSI6ImF1dG8iLCJzbmkiOiIiLCJ0bHMiOiJub25lIiwidHlwZSI6IiIsInYiOiIyIn0=
-vmess://eyJhZGQiOiJ2Mi5ub29lbmQubWUiLCJhaWQiOiIwIiwiYWxwbiI6IiIsImZwIjoiIiwiaG9zdCI6IiIsImlkIjoiODAyMjAzMWItYjcyMy00ODQ0LWI5NGYtNjk0NTkxYmEwY2ViIiwibmV0IjoidGNwIiwicGF0aCI6IiIsInBvcnQiOiI0NDI3IiwicHMiOiLwn5qAIE1hcnogKGtoYW50XzU0MTY5NTE4NjEpIFtWTWVzcyAtIHRjcF0iLCJzY3kiOiJhdXRvIiwic25pIjoiIiwidGxzIjoibm9uZSIsInR5cGUiOiIiLCJ2IjoiMiJ9
-trojan://j72NVQuSiI8GgouCX9QJsw@v2.nooend.me:9094?security=none&headerType=none&type=tcp#%F0%9F%9A%80%20Marz%20%28khant_5416951861%29%20%5BTrojan%20-%20tcp%5D
-ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpUNXZYNEZUOVdpSUwwYW9Eb1U3NXZB@v2.nooend.me:1080#Key%20For%20%F0%9F%A7%8F
-vless://f69c58a8-0e64-448d-a0f2-6c84c74fd109@v2.nooend.me:9850?security=&encryption=none&headerType=none&type=tcp#%F0%9F%9A%80%20Marz%20%28khant_5416951861%29%20%5BVLESS%20-%20tcp%5D
+ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpUMkFWbjZwcm02RVA0c3VrQ0tEMjY5@45.32.127.84:10831/?outline=1
+ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTo2Q3BHbmFYeE1Ibks3ZlpyZFFXdWJT@45.32.127.84:10831/?outline=1
+ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpJNVZCcURtR3JxREN1QVlMYzREeGFl@45.32.127.84:10831/?outline=1
+ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTo2Q3BHbmFYeE1Ibks3ZlpyZFFXdWJT@45.32.127.84:10831/?outline=1#AMT Server
