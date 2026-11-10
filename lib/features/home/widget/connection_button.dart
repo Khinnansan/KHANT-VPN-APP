@@ -14,6 +14,7 @@ import 'package:hiddify/features/connection/model/connection_status.dart';
 import 'package:hiddify/features/connection/notifier/connection_notifier.dart';
 import 'package:hiddify/features/home/widget/eclipse_button_painter.dart';
 import 'package:hiddify/features/profile/notifier/active_profile_notifier.dart';
+import 'package:hiddify/features/proxy/active/active_proxy_notifier.dart';
 import 'package:hiddify/features/stats/notifier/stats_notifier.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -73,6 +74,11 @@ class ConnectionButton extends HookConsumerWidget {
     };
 
     final stats = ref.watch(statsNotifierProvider).valueOrNull;
+    final activeProxy = ref.watch(activeProxyNotifierProvider).valueOrNull;
+    final countryCode = activeProxy?.hasIp == true
+        ? activeProxy!.ipinfo.countryCode
+        : null;
+    final ping = activeProxy?.urlTestDelay ?? 0;
 
     return _ConnectionButton(
       look: look,
@@ -85,6 +91,8 @@ class ConnectionButton extends HookConsumerWidget {
       errorDetailsLabel: t.connection.errorDetails,
       download: stats?.downlink.toInt() ?? 0,
       upload: stats?.uplink.toInt() ?? 0,
+      countryCode: countryCode,
+      ping: ping,
       label: switch (look) {
         _Look.loading => "",
         _Look.disconnected => t.connection.tapToConnect,
@@ -169,6 +177,8 @@ class _ConnectionButton extends HookWidget {
     required this.errorDetailsLabel,
     required this.download,
     required this.upload,
+    required this.countryCode,
+    required this.ping,
     required this.label,
     required this.hint,
   });
@@ -179,6 +189,8 @@ class _ConnectionButton extends HookWidget {
   final String errorDetailsLabel;
   final int download;
   final int upload;
+  final String? countryCode;
+  final int ping;
   final String label;
   final String? hint;
 
@@ -393,6 +405,10 @@ class _ConnectionButton extends HookWidget {
             ],
           ),
         ),
+        if (look == _Look.connected && countryCode != null) ...[
+          _ConnectionMeta(countryCode: countryCode!, ping: ping),
+          const Gap(12),
+        ],
         const Gap(28),
         _SpeedStatsCard(
           download: download,
@@ -400,6 +416,77 @@ class _ConnectionButton extends HookWidget {
           connected: look == _Look.connected,
         ),
       ],
+    );
+  }
+}
+
+class _ConnectionMeta extends StatelessWidget {
+  const _ConnectionMeta({required this.countryCode, required this.ping});
+
+  final String countryCode;
+  final int ping;
+
+  static const _names = <String, String>{
+    'SG': 'Singapore',
+    'JP': 'Japan',
+    'US': 'United States',
+    'DE': 'Germany',
+    'TH': 'Thailand',
+    'HK': 'Hong Kong',
+    'GB': 'United Kingdom',
+    'KR': 'South Korea',
+    'TW': 'Taiwan',
+    'MY': 'Malaysia',
+    'ID': 'Indonesia',
+    'IN': 'India',
+    'FR': 'France',
+    'NL': 'Netherlands',
+    'CA': 'Canada',
+    'AU': 'Australia',
+    'MM': 'Myanmar',
+  };
+
+  String get _flag {
+    final code = countryCode.toUpperCase();
+    if (code.length != 2) return '🌐';
+    return String.fromCharCodes(code.codeUnits.map((c) => 0x1F1E6 + c - 65));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final name = _names[countryCode.toUpperCase()] ?? countryCode.toUpperCase();
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      decoration: BoxDecoration(
+        color: const Color(0xFF100E0B),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: const Color(0xFFFFC857).withValues(alpha: .22)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(_flag, style: const TextStyle(fontSize: 17)),
+          const Gap(8),
+          Flexible(
+            child: Text(
+              name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600),
+            ),
+          ),
+          const Gap(14),
+          Container(width: 1, height: 20, color: const Color(0xFFFFC857).withValues(alpha: .35)),
+          const Gap(14),
+          const Icon(Icons.wifi_rounded, size: 17, color: Colors.white),
+          const Gap(6),
+          Text(
+            ping > 0 ? '$ping ms' : '— ms',
+            style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600),
+          ),
+        ],
+      ),
     );
   }
 }
