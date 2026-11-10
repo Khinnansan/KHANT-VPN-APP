@@ -10,17 +10,11 @@ class LocalePreferences extends _$LocalePreferences with AppLogger {
   @override
   AppLocale build() {
     final persisted = ref.watch(sharedPreferencesProvider).requireValue.getString("locale");
-    if (persisted == null) return AppLocaleUtils.findDeviceLocale();
-    // keep backward compatibility with chinese after changing zh to zh_CN
-    if (persisted == "zh") {
-      return AppLocale.zhCn;
+    if (persisted == null) {
+      return AppLocaleUtils.findDeviceLocale() == AppLocale.my ? AppLocale.my : AppLocale.en;
     }
-    try {
-      return AppLocale.values.byName(persisted);
-    } catch (e) {
-      loggy.error("error setting locale: [$persisted]", e);
-      return AppLocale.en;
-    }
+    // KHANT VPN supports Myanmar and English only.
+    return persisted == "my" ? AppLocale.my : AppLocale.en;
   }
 
   Future<void> changeLocale(AppLocale value) async {
