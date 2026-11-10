@@ -178,6 +178,12 @@ class SettingsPage extends HookConsumerWidget {
                 icon: Icons.content_cut_rounded,
                 namedLocation: context.namedLocation('tlsTricks'),
               ),
+              if (Breakpoint(context).isMobile())
+                SettingsSection(
+                  title: t.pages.logs.title,
+                  icon: Icons.description_rounded,
+                  namedLocation: context.namedLocation('logs'),
+                ),
             ],
           ),
           if (PlatformUtils.isIOS || PlatformUtils.isMacOS)
@@ -191,11 +197,6 @@ class SettingsPage extends HookConsumerWidget {
               ),
             ),
           if (Breakpoint(context).isMobile()) ...[
-            SettingsSection(
-              title: t.pages.logs.title,
-              icon: Icons.description_rounded,
-              namedLocation: context.namedLocation('logs'),
-            ),
             SettingsSection(
               title: t.pages.about.title,
               icon: Icons.info_rounded,
