@@ -108,11 +108,6 @@ class EclipseButtonPainter extends CustomPainter {
   final bool drawLogo;
   final double logoOpacity;
 
-  static const _gold = Color(0xFFFFC857);
-  static const _goldLight = Color(0xFFFFE6A6);
-  static const _goldDark = Color(0xFF9C6418);
-  static const _black = Color(0xFF101010);
-
   static const _fade = .35;
 
   static Rect errorBadgeRect(Offset center, double radius) =>
