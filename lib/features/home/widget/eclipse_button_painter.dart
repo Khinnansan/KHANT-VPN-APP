@@ -294,8 +294,10 @@ class _Ctx {
   // Decorative dotted world map and orbital paths behind the connection core.
   void globe({required bool connected}) {
     final pulse = .82 + .18 * math.sin(f.time * 1.25);
+    // Match the reference: idle globe stays gold; the entire connected
+    // world map shifts to vivid green, not just the orbit around the K.
     final color = connected
-        ? const Color(0xFF65FF45)
+        ? const Color(0xFF39FF35)
         : const Color(0xFFFFC857);
     final globeRadius = r * 1.58;
     final centerY = center.dy - r * .16;
@@ -309,8 +311,8 @@ class _Ctx {
       ),
       Paint()
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 1.1
-        ..color = color.withValues(alpha: .23 * pulse),
+        ..strokeWidth = connected ? 1.6 : 1.1
+        ..color = color.withValues(alpha: (connected ? .48 : .23) * pulse),
     );
 
     // Stylized continent clusters made from glowing dots.
@@ -329,20 +331,22 @@ class _Ctx {
           mapCenter.dx + point.dx * globeRadius,
           mapCenter.dy + point.dy * globeRadius,
         );
-        c.drawCircle(
-          at,
-          math.max(1.0, r * .018),
-          Paint()..color = color.withValues(alpha: .68 * pulse),
-        );
-        if (connected && (point.dx + point.dy).abs() > .65) {
+        if (connected) {
+          // Soft green bloom beneath each continent light makes the map
+          // visibly green across its full surface while preserving the dots.
           c.drawCircle(
             at,
-            r * .045,
+            r * .052,
             Paint()
-              ..color = color.withValues(alpha: .16)
-              ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5),
+              ..color = color.withValues(alpha: .24 * pulse)
+              ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 7),
           );
         }
+        c.drawCircle(
+          at,
+          math.max(1.0, r * (connected ? .022 : .018)),
+          Paint()..color = color.withValues(alpha: (connected ? .95 : .68) * pulse),
+        );
       }
     }
   }
