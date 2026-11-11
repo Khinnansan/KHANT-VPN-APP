@@ -5,6 +5,7 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hiddify/core/localization/locale_extensions.dart';
@@ -225,214 +226,28 @@ class _KhantLaunchSplash extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ColoredBox(
-      color: Color(0xFF000000),
-      child: Material(
-        color: Color(0xFF000000),
-        child: SafeArea(
-        child: Container(
-          margin: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(34),
-            border: Border.all(color: const Color(0xFFFFD36A), width: 1.5),
-            boxShadow: const [
-              BoxShadow(color: Color(0x66FFC247), blurRadius: 13, spreadRadius: 1),
-              BoxShadow(color: Color(0x22FFC247), blurRadius: 28, spreadRadius: 3),
-            ],
+    return const ColoredBox(
+      color: Colors.black,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          SvgPicture.asset(
+            'assets/images/khant_splash.svg',
+            fit: BoxFit.cover,
           ),
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              final emblemSize = (constraints.maxWidth * .68).clamp(190.0, 310.0);
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Spacer(flex: 3),
-                  SizedBox(
-                    width: emblemSize,
-                    height: emblemSize,
-                    child: const CustomPaint(painter: _KhantLaunchLogoPainter()),
-                  ),
-                  const SizedBox(height: 24),
-                  const Text(
-                    'KHANT VPN',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Color(0xFFFFD46B),
-                      fontSize: 30,
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: 3.2,
-                      shadows: [Shadow(color: Color(0xFFFFB52E), blurRadius: 16)],
-                    ),
-                  ),
-                  const SizedBox(height: 7),
-                  const Text(
-                    'PREMIUM PRIVATE NETWORK',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Color(0xFFE5D8BE),
-                      fontSize: 12,
-                      letterSpacing: 2.1,
-                    ),
-                  ),
-                  const Spacer(flex: 2),
-                  const SizedBox(
-                    width: 42,
-                    height: 42,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 3.5,
-                      valueColor: AlwaysStoppedAnimation(Color(0xFFFFC64D)),
-                    ),
-                  ),
-                  const SizedBox(height: 18),
-                  const Text('Loading...', style: TextStyle(color: Colors.white70, fontSize: 16)),
-                  const Spacer(flex: 3),
-                ],
-              );
-            },
+          Align(
+            alignment: Alignment(0, .53),
+            child: SizedBox(
+              width: 38,
+              height: 38,
+              child: CircularProgressIndicator(
+                strokeWidth: 3,
+                valueColor: AlwaysStoppedAnimation(Color(0xFFFFC342)),
+              ),
+            ),
           ),
-          ),
-        ),
+        ],
       ),
     );
   }
-}
-
-class _KhantLaunchLogoPainter extends CustomPainter {
-  const _KhantLaunchLogoPainter();
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final center = size.center(Offset.zero);
-    final r = size.shortestSide * .43;
-    final gold = const Color(0xFFFFC342);
-
-    canvas.drawCircle(
-      center,
-      r * 1.28,
-      Paint()
-        ..shader = RadialGradient(
-          colors: [const Color(0x66FFB51B), const Color(0x22FFB51B), Colors.transparent],
-        ).createShader(Rect.fromCircle(center: center, radius: r * 1.3)),
-    );
-    for (var i = 0; i < 48; i++) {
-      final angle = i * 3.141592653589793 * 2 / 48;
-      final start = center + Offset.fromDirection(angle, r * 1.02);
-      final end = center + Offset.fromDirection(angle, r * (1.13 + (i % 4) * .045));
-      canvas.drawLine(
-        start,
-        end,
-        Paint()
-          ..strokeWidth = i % 4 == 0 ? 1.8 : 1
-          ..color = gold.withValues(alpha: i % 4 == 0 ? .7 : .28),
-      );
-    }
-    canvas.drawCircle(
-      center,
-      r,
-      Paint()
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 3
-        ..color = gold.withValues(alpha: .92)
-        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5),
-    );
-    canvas.drawCircle(
-      center,
-      r,
-      Paint()
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 1.4
-        ..color = const Color(0xFFFFF0B2),
-    );
-
-    final k = r / 54;
-    final mark = Path()
-      ..moveTo(center.dx - 17 * k, center.dy - 31 * k)
-      ..lineTo(center.dx - 3 * k, center.dy - 31 * k)
-      ..lineTo(center.dx - 8 * k, center.dy - 4 * k)
-      ..lineTo(center.dx + 23 * k, center.dy - 31 * k)
-      ..lineTo(center.dx + 42 * k, center.dy - 31 * k)
-      ..cubicTo(center.dx + 29 * k, center.dy - 20 * k, center.dx + 17 * k, center.dy - 9 * k, center.dx + 4 * k, center.dy + 2 * k)
-      ..lineTo(center.dx + 34 * k, center.dy + 31 * k)
-      ..lineTo(center.dx + 15 * k, center.dy + 31 * k)
-      ..lineTo(center.dx - 11 * k, center.dy + 8 * k)
-      ..lineTo(center.dx - 15 * k, center.dy + 31 * k)
-      ..lineTo(center.dx - 29 * k, center.dy + 31 * k)
-      ..lineTo(center.dx - 24 * k, center.dy + 2 * k)
-      ..lineTo(center.dx - 43 * k, center.dy - 31 * k)
-      ..lineTo(center.dx - 25 * k, center.dy - 31 * k)
-      ..lineTo(center.dx - 12 * k, center.dy - 10 * k)
-      ..close();
-
-    canvas.drawPath(
-      mark,
-      Paint()
-        ..color = const Color(0xFFFFC43D).withValues(alpha: .55)
-        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 13),
-    );
-    canvas.drawPath(
-      mark,
-      Paint()
-        ..shader = const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Color(0xFFFFFBE0),
-            Color(0xFFFFD85A),
-            Color(0xFFE69A08),
-            Color(0xFFFFEAA0),
-            Color(0xFF9C5A00),
-          ],
-        ).createShader(Rect.fromCircle(center: center, radius: r * .75)),
-    );
-
-    final swoosh = Path()
-      ..moveTo(center.dx - 39 * k, center.dy + 23 * k)
-      ..cubicTo(center.dx - 14 * k, center.dy + 5 * k, center.dx + 16 * k, center.dy + 9 * k, center.dx + 39 * k, center.dy - 25 * k)
-      ..cubicTo(center.dx + 23 * k, center.dy + 7 * k, center.dx - 10 * k, center.dy + 35 * k, center.dx - 39 * k, center.dy + 23 * k);
-    canvas.drawPath(
-      swoosh,
-      Paint()
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 3.2 * k
-        ..strokeCap = StrokeCap.round
-        ..color = const Color(0xFFFFD45A)
-        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 2),
-    );
-    canvas.drawPath(
-      swoosh,
-      Paint()
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 1.7 * k
-        ..strokeCap = StrokeCap.round
-        ..color = const Color(0xFFFFF2C0),
-    );
-
-    final crown = Path()
-      ..moveTo(center.dx - 16 * k, center.dy - 37 * k)
-      ..lineTo(center.dx - 21 * k, center.dy - 55 * k)
-      ..lineTo(center.dx - 8 * k, center.dy - 46 * k)
-      ..lineTo(center.dx, center.dy - 59 * k)
-      ..lineTo(center.dx + 8 * k, center.dy - 46 * k)
-      ..lineTo(center.dx + 21 * k, center.dy - 55 * k)
-      ..lineTo(center.dx + 16 * k, center.dy - 37 * k)
-      ..close();
-    canvas.drawPath(crown, Paint()..color = const Color(0xFFFFD45A));
-    canvas.drawLine(
-      Offset(center.dx - 17 * k, center.dy - 35 * k),
-      Offset(center.dx + 17 * k, center.dy - 35 * k),
-      Paint()
-        ..strokeWidth = 3 * k
-        ..color = const Color(0xFFFFF0B2),
-    );
-    for (final dx in [-21.0, 0.0, 21.0]) {
-      canvas.drawCircle(
-        Offset(center.dx + dx * k, center.dy + (dx == 0 ? -59 : -55) * k),
-        2.5 * k,
-        Paint()..color = const Color(0xFFFFF0B2),
-      );
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
