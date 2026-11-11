@@ -5,7 +5,6 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hiddify/core/localization/locale_extensions.dart';
@@ -231,9 +230,11 @@ class _KhantLaunchSplash extends StatelessWidget {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          SvgPicture.asset(
-            'assets/images/khant_splash.svg',
+          Image.asset(
+            'assets/images/khant_splash_screen.png',
             fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
           ),
           Align(
             alignment: Alignment(0, .53),
