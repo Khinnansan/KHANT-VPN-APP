@@ -615,14 +615,19 @@ class _Ctx {
       ..lineTo(center.dx + 11 * k, center.dy - 31 * k)
       ..close();
 
+    // Layered premium-gold bloom: keep the K itself gold in every state,
+    // while making its silhouette visibly luminous like the KHANT reference.
     c.drawPath(
       path,
       Paint()
-        ..color = gold.withValues(alpha: .22 * opacity)
-        ..maskFilter = const MaskFilter.blur(
-          BlurStyle.normal,
-          10,
-        ),
+        ..color = const Color(0xFFFFB51B).withValues(alpha: .34 * opacity)
+        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 18),
+    );
+    c.drawPath(
+      path,
+      Paint()
+        ..color = const Color(0xFFFFE6A0).withValues(alpha: .30 * opacity)
+        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 7),
     );
 
     c.drawPath(
@@ -693,13 +698,14 @@ class _Ctx {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            const Color(0xFFFFF6C7).withValues(alpha: opacity),
-            const Color(0xFFFFD75E).withValues(alpha: opacity),
-            const Color(0xFFE39A16).withValues(alpha: opacity),
-            const Color(0xFFFFE9A0).withValues(alpha: opacity),
-            const Color(0xFF9C5B08).withValues(alpha: opacity),
+            const Color(0xFFFFFFFF).withValues(alpha: opacity),
+            const Color(0xFFFFF4C2).withValues(alpha: opacity),
+            const Color(0xFFFFD13D).withValues(alpha: opacity),
+            const Color(0xFFE99A08).withValues(alpha: opacity),
+            const Color(0xFFFFEAA0).withValues(alpha: opacity),
+            const Color(0xFF9A5700).withValues(alpha: opacity),
           ],
-          stops: const [0, .22, .48, .72, 1],
+          stops: const [0, .16, .34, .52, .76, 1],
         ).createShader(logoBounds),
     );
 
@@ -739,9 +745,17 @@ class _Ctx {
       path,
       Paint()
         ..style = PaintingStyle.stroke
-        ..strokeWidth = k * 1.15
-        ..color = const Color(0xFFFFE7A0).withValues(alpha: .72 * opacity)
-        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 2.2),
+        ..strokeWidth = k * 1.8
+        ..color = const Color(0xFFFFF1BC).withValues(alpha: .95 * opacity)
+        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 3.5),
+    );
+    // Crisp reflective edge on top of the soft bloom.
+    c.drawPath(
+      path,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = k * .55
+        ..color = const Color(0xFFFFFFFF).withValues(alpha: .78 * opacity),
     );
 
     c.restore();
