@@ -419,29 +419,23 @@ class _ConnectionButton extends HookWidget {
           _ConnectionMeta(countryCode: countryCode!, ping: ping),
           const Gap(12),
         ],
-        const Gap(28),
-        _SpeedStatsCard(
-          download: download,
-          upload: upload,
-          connected: look == _Look.connected,
+        const Gap(22),
+        _ConnectionDurationCard(active: look == _Look.connected),
+        const Gap(8),
+        _DataUsageCard(
+          download: look == _Look.connected ? totalDownload : 0,
+          upload: look == _Look.connected ? totalUpload : 0,
+          available: look != _Look.connected || trafficAvailable,
         ),
-        if (look == _Look.connected) ...[
-          const Gap(12),
-          _ConnectionDurationCard(),
-          const Gap(8),
-          _DataUsageCard(
-            download: totalDownload,
-            upload: totalUpload,
-            available: trafficAvailable,
-          ),
-        ],
       ],
     );
   }
 }
 
 class _ConnectionDurationCard extends HookWidget {
-  const _ConnectionDurationCard();
+  const _ConnectionDurationCard({required this.active});
+
+  final bool active;
 
   @override
   Widget build(BuildContext context) {
@@ -449,8 +443,10 @@ class _ConnectionDurationCard extends HookWidget {
     final stopwatch = useMemoized(() => Stopwatch());
     useEffect(() {
       stopwatch
-        ..reset()
-        ..start();
+        ..reset();
+      elapsed.value = Duration.zero;
+      if (!active) return null;
+      stopwatch.start();
       final timer = Timer.periodic(const Duration(seconds: 1), (_) {
         elapsed.value = stopwatch.elapsed;
       });
@@ -458,7 +454,7 @@ class _ConnectionDurationCard extends HookWidget {
         timer.cancel();
         stopwatch.stop();
       };
-    }, const []);
+    }, [active]);
     String two(int value) => value.toString().padLeft(2, '0');
     final duration = elapsed.value;
     final label = '${two(duration.inHours)}:${two(duration.inMinutes.remainder(60))}:${two(duration.inSeconds.remainder(60))}';
