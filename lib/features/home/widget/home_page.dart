@@ -144,121 +144,125 @@ class HomePage extends HookConsumerWidget {
                 ),
               ),
             ),
-            Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 600),
-                child: CustomScrollView(
-                  physics: const ClampingScrollPhysics(),
-                  slivers: [
-                    MultiSliver(
-                      children: [
-                        switch (activeProfile) {
-                          AsyncData(value: final profile?) =>
-                            SliverPersistentHeader(
-                              pinned: true,
-                              delegate: _ProfileTileHeaderDelegate(
-                                profile: profile,
-                              ),
-                            ),
-                          _ => const SliverToBoxAdapter(
-                              child: SizedBox.shrink(),
-                            ),
-                        },
-                        SliverFillRemaining(
-                          hasScrollBody: false,
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(
-                              18,
-                              12,
-                              18,
-                              24,
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Spacer(flex: 2),
-                                Container(
-                                  width: double.infinity,
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 24,
-                                    horizontal: 12,
-                                  ),
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final contentWidth = constraints.maxWidth.clamp(0.0, 600.0);
+                final profile = activeProfile.valueOrNull;
+                return ClipRect(
+                  child: Center(
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.topCenter,
+                      child: SizedBox(
+                        width: contentWidth,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (profile != null)
+                              Container(
+                                color: const Color(0xFF17130C),
+                                padding: const EdgeInsets.fromLTRB(15, 6, 15, 6),
+                                child: Container(
                                   decoration: BoxDecoration(
-                                    color: _cardBackground.withValues(
-                                      alpha: .88,
-                                    ),
-                                    borderRadius: BorderRadius.circular(28),
+                                    color: _cardBackground,
+                                    borderRadius: BorderRadius.circular(19),
                                     border: Border.all(
-                                      color: _gold.withValues(alpha: .30),
-                                      width: 1,
+                                      color: _gold.withValues(alpha: .28),
                                     ),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: _gold.withValues(alpha: .07),
-                                        blurRadius: 35,
-                                        spreadRadius: 1,
-                                      ),
-                                      BoxShadow(
-                                        color: Colors.black.withValues(
-                                          alpha: .5,
-                                        ),
-                                        blurRadius: 20,
-                                        offset: const Offset(0, 10),
+                                        color: Colors.black.withValues(alpha: .3),
+                                        blurRadius: 15,
+                                        offset: const Offset(0, 5),
                                       ),
                                     ],
                                   ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            width: 6,
-                                            height: 6,
-                                            decoration: const BoxDecoration(
-                                              color: _gold,
-                                              shape: BoxShape.circle,
-                                            ),
-                                          ),
-                                          const Gap(8),
-                                          const Text(
-                                            'SECURE CONNECTION',
-                                            style: TextStyle(
-                                              color: _goldLight,
-                                              fontSize: 11,
-                                              fontWeight: FontWeight.w800,
-                                              letterSpacing: 2,
-                                            ),
-                                          ),
-                                          const Gap(8),
-                                          Container(
-                                            width: 6,
-                                            height: 6,
-                                            decoration: const BoxDecoration(
-                                              color: _gold,
-                                              shape: BoxShape.circle,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      const Gap(22),
-                                      const ConnectionButton(),
-                                    ],
+                                  child: ProfileTile(
+                                    profile: profile,
+                                    isMain: true,
+                                    margin: const EdgeInsets.symmetric(
+                                      horizontal: 4,
+                                      vertical: 4,
+                                    ),
                                   ),
                                 ),
-                                const Spacer(flex: 2),
-                                const Gap(24),
-                              ],
+                              ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(18, 8, 18, 10),
+                              child: Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 14,
+                                  horizontal: 12,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: _cardBackground.withValues(alpha: .88),
+                                  borderRadius: BorderRadius.circular(28),
+                                  border: Border.all(
+                                    color: _gold.withValues(alpha: .30),
+                                    width: 1,
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: _gold.withValues(alpha: .07),
+                                      blurRadius: 35,
+                                      spreadRadius: 1,
+                                    ),
+                                    BoxShadow(
+                                      color: Colors.black.withValues(alpha: .5),
+                                      blurRadius: 20,
+                                      offset: const Offset(0, 10),
+                                    ),
+                                  ],
+                                ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          width: 6,
+                                          height: 6,
+                                          decoration: const BoxDecoration(
+                                            color: _gold,
+                                            shape: BoxShape.circle,
+                                          ),
+                                        ),
+                                        const Gap(8),
+                                        const Text(
+                                          'SECURE CONNECTION',
+                                          style: TextStyle(
+                                            color: _goldLight,
+                                            fontSize: 11,
+                                            fontWeight: FontWeight.w800,
+                                            letterSpacing: 2,
+                                          ),
+                                        ),
+                                        const Gap(8),
+                                        Container(
+                                          width: 6,
+                                          height: 6,
+                                          decoration: const BoxDecoration(
+                                            color: _gold,
+                                            shape: BoxShape.circle,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const Gap(12),
+                                    const ConnectionButton(),
+                                  ],
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                  ],
-                ),
-              ),
+                  ),
+                );
+              },
             ),
           ],
         ),
