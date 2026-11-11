@@ -143,6 +143,18 @@ class HomePage extends HookConsumerWidget {
                 ),
               ),
             ),
+            // Subtle gold light waves fill the otherwise empty lower area.
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              height: 220,
+              child: IgnorePointer(
+                child: CustomPaint(
+                  painter: _KhantBottomGoldWavePainter(),
+                ),
+              ),
+            ),
             LayoutBuilder(
               builder: (context, constraints) {
                 final contentWidth = constraints.maxWidth.clamp(0.0, 600.0);
@@ -309,4 +321,57 @@ class AppVersionLabel extends HookConsumerWidget {
       ),
     );
   }
+}
+
+
+class _KhantBottomGoldWavePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final glow = Paint()
+      ..color = const Color(0xFFFFB51B).withValues(alpha: .10)
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 34);
+    canvas.drawOval(
+      Rect.fromCenter(
+        center: Offset(size.width * .78, size.height * .76),
+        width: size.width * .72,
+        height: size.height * .34,
+      ),
+      glow,
+    );
+
+    for (var i = 0; i < 13; i++) {
+      final path = Path()
+        ..moveTo(size.width * (0.18 + i * .018), size.height * (1.05 - i * .012))
+        ..cubicTo(
+          size.width * .42,
+          size.height * (.82 - i * .018),
+          size.width * .72,
+          size.height * (1.02 - i * .012),
+          size.width * (1.08 - i * .012),
+          size.height * (.24 + i * .035),
+        );
+      final paint = Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = i == 0 ? 1.8 : .65
+        ..color = const Color(0xFFFFC84A).withValues(
+          alpha: i == 0 ? .62 : .13 + (i % 4) * .035,
+        );
+      canvas.drawPath(path, paint);
+    }
+
+    final dots = Paint()..color = const Color(0xFFFFD36A).withValues(alpha: .32);
+    for (var row = 0; row < 7; row++) {
+      for (var col = 0; col < 24; col++) {
+        final x = size.width * (.42 + col * .027);
+        final y = size.height * (.58 + row * .055) -
+            (col * .012 * size.height);
+        if (x <= size.width && y >= 0 && y <= size.height) {
+          canvas.drawCircle(Offset(x, y), (col + row) % 4 == 0 ? 1.15 : .65, dots);
+        }
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _KhantBottomGoldWavePainter oldDelegate) => false;
 }
