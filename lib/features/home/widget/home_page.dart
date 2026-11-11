@@ -148,7 +148,7 @@ class HomePage extends HookConsumerWidget {
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 600),
                 child: CustomScrollView(
-                  physics: const BouncingScrollPhysics(),
+                  physics: const ClampingScrollPhysics(),
                   slivers: [
                     MultiSliver(
                       children: [
