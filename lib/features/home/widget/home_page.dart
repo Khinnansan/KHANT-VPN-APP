@@ -6,10 +6,10 @@ import 'package:hiddify/core/app_info/app_info_provider.dart';
 import 'package:hiddify/core/localization/translations.dart';
 import 'package:hiddify/core/router/bottom_sheets/bottom_sheets_notifier.dart';
 import 'package:hiddify/features/home/widget/connection_button.dart';
+import 'package:hiddify/features/profile/model/profile_entity.dart';
 import 'package:hiddify/features/profile/notifier/active_profile_notifier.dart';
 import 'package:hiddify/features/profile/widget/profile_tile.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:sliver_tools/sliver_tools.dart';
 
 const Color _gold = Color(0xFFD6AD55);
 const Color _goldLight = Color(0xFFF3D991);
@@ -147,7 +147,10 @@ class HomePage extends HookConsumerWidget {
             LayoutBuilder(
               builder: (context, constraints) {
                 final contentWidth = constraints.maxWidth.clamp(0.0, 600.0);
-                final profile = activeProfile.valueOrNull;
+                final ProfileEntity? profile = switch (activeProfile) {
+                  AsyncData(value: final value?) => value,
+                  _ => null,
+                };
                 return ClipRect(
                   child: Center(
                     child: FittedBox(
@@ -310,52 +313,3 @@ class AppVersionLabel extends HookConsumerWidget {
   }
 }
 
-
-class _ProfileTileHeaderDelegate extends SliverPersistentHeaderDelegate {
-  _ProfileTileHeaderDelegate({required this.profile});
-
-  final dynamic profile;
-
-  @override
-  double get minExtent => 104;
-
-  @override
-  double get maxExtent => 104;
-
-  @override
-  Widget build(
-    BuildContext context,
-    double shrinkOffset,
-    bool overlapsContent,
-  ) {
-    return Container(
-      color: const Color(0xFF17130C),
-      padding: const EdgeInsets.fromLTRB(15, 8, 15, 8),
-      child: Container(
-        decoration: BoxDecoration(
-          color: _cardBackground,
-          borderRadius: BorderRadius.circular(19),
-          border: Border.all(
-            color: _gold.withValues(alpha: .28),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: .3),
-              blurRadius: 15,
-              offset: const Offset(0, 5),
-            ),
-          ],
-        ),
-        child: ProfileTile(
-          profile: profile,
-          isMain: true,
-          margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-        ),
-      ),
-    );
-  }
-
-  @override
-  bool shouldRebuild(covariant _ProfileTileHeaderDelegate oldDelegate) =>
-      oldDelegate.profile != profile;
-}
