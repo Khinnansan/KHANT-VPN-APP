@@ -20,16 +20,18 @@ class StatsNotifier extends _$StatsNotifier with AppLogger {
       return ref
           .watch(statsRepositoryProvider)
           .watchStats()
-          .map((event) {
-            final info = event.getOrElse((_) => SystemInfo.create());
-            // The pinned Hiddify Core returns valid byte counters from ReadStatus,
-            // but currently leaves traffic_available unset (false). A received
-            // SystemInfo event while the VPN service is running is the signal
-            // that these counters are available, including legitimate zero values.
-            return info.copyWith((message) {
-              message.trafficAvailable = true;
-            });
-          });
+          .map(
+            (event) => event.match(
+              (_) => SystemInfo.create(),
+              (info) => info.copyWith((message) {
+                // The pinned Hiddify Core fills the byte counters in ReadStatus
+                // but currently leaves traffic_available unset (false). A valid
+                // SystemInfo event while the VPN service is running means these
+                // counters are available, including legitimate zero values.
+                message.trafficAvailable = true;
+              }),
+            ),
+          );
     } else {
       return Stream.value(SystemInfo.create());
     }
