@@ -366,19 +366,16 @@ void main() {
       expect(container.read(rulesNotifierProvider).last.enabled, isFalse);
     });
 
-    testWidgets('follows the region chip: Other hides the region rule, another region brings it back', (tester) async {
-      await show(tester);
+    testWidgets('follows the saved region: Other hides the region rule, another region brings it back', (tester) async {
+      final container = await show(tester);
 
-      await tester.tap(find.text('Region'));
-      await tester.pumpAndSettle();
-      await tester.tap(find.text('Other').last);
+      // Region is selected in the app's onboarding/settings flow, not on this routing page.
+      await changeRegion(container, Region.other);
       await tester.pumpAndSettle();
       expect(find.textContaining('Bypass sites in'), findsNothing);
       expect(find.text('Built-in'), findsNWidgets(2));
 
-      await tester.tap(find.text('Region'));
-      await tester.pumpAndSettle();
-      await tester.tap(find.text('China').last);
+      await changeRegion(container, Region.cn);
       await tester.pumpAndSettle();
       expect(find.text('Bypass sites in China'), findsOneWidget);
       expect(find.text('Built-in'), findsNWidgets(3));
