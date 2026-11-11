@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hiddify/core/localization/translations.dart';
 import 'package:hiddify/features/connection/notifier/connection_notifier.dart';
+import 'package:hiddify/core/model/constants.dart';
 import 'package:hiddify/features/proxy/overview/proxies_overview_notifier.dart';
 import 'package:hiddify/features/proxy/widget/proxy_tile.dart';
 import 'package:hiddify/utils/utils.dart';
@@ -25,16 +26,21 @@ class ProxiesOverviewPage extends HookConsumerWidget with PresLogger {
     // );
 
     return Scaffold(
-      backgroundColor: const Color(0xFF080808),
+      backgroundColor: const Color(0xFF050505),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF080808),
+        backgroundColor: const Color(0xFF050505),
         surfaceTintColor: Colors.transparent,
-        title: Text(t.pages.proxies.title, style: const TextStyle(color: Color(0xFFFFE3A0), fontWeight: FontWeight.w800)),
+        title: Text(t.pages.proxies.title, style: const TextStyle(color: Color(0xFFFFD36A), fontWeight: FontWeight.w900, letterSpacing: .5)),
         actions: [
+          IconButton(
+            tooltip: t.connection.tapToRetry,
+            onPressed: () => ref.invalidate(proxiesOverviewNotifierProvider),
+            icon: const Icon(Icons.refresh_rounded, color: Color(0xFFFFC857)),
+          ),
           PopupMenuButton<ProxiesSort>(
             initialValue: sortBy,
             onSelected: ref.read(proxiesSortNotifierProvider.notifier).update,
-            icon: const Icon(FluentIcons.arrow_sort_24_regular),
+            icon: const Icon(FluentIcons.arrow_sort_24_regular, color: Color(0xFFFFC857)),
             tooltip: t.pages.proxies.sort,
             itemBuilder: (context) {
               return [...ProxiesSort.values.map((e) => PopupMenuItem(value: e, child: Text(e.present(t))))];
@@ -50,18 +56,29 @@ class ProxiesOverviewPage extends HookConsumerWidget with PresLogger {
         tooltip: t.pages.proxies.testDelay,
         child: const Icon(FluentIcons.flash_24_filled),
       ),
-      body: proxies.when(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFF080705), Color(0xFF030303), Color(0xFF000000)],
+          ),
+        ),
+        child: Stack(
+          children: [
+            const Positioned(left: 0, right: 0, bottom: 0, height: 180, child: IgnorePointer(child: CustomPaint(painter: _ProxyGoldWavePainter()))),
+            proxies.when(
         data: (group) => group != null
             ? LayoutBuilder(
                 builder: (context, constraints) {
                   final width = constraints.maxWidth;
                   final crossAxisCount = PlatformUtils.isMobile && width < 600 ? 1 : max(1, (width / 268).floor());
                   return GridView.builder(
-                    padding: const EdgeInsets.fromLTRB(8, 12, 8, 96),
+                    padding: const EdgeInsets.fromLTRB(14, 16, 14, 112),
                     itemCount: group.items.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: crossAxisCount,
-                      mainAxisExtent: 72,
+                      mainAxisExtent: 96,
                     ),
                     itemBuilder: (context, index) {
                       final proxy = group.items[index];
@@ -103,6 +120,26 @@ class ProxiesOverviewPage extends HookConsumerWidget with PresLogger {
         ),
         loading: () => const Center(child: CircularProgressIndicator()),
       ),
+          ],
+        ),
+      ),
     );
   }
+}
+
+class _ProxyGoldWavePainter extends CustomPainter {
+  const _ProxyGoldWavePainter();
+  @override
+  void paint(Canvas canvas, Size size) {
+    final glow = Paint()..color = const Color(0xFFFFB51B).withValues(alpha: .09)..maskFilter = const MaskFilter.blur(BlurStyle.normal, 30);
+    canvas.drawOval(Rect.fromCenter(center: Offset(size.width * .55, size.height * .95), width: size.width * .9, height: 55), glow);
+    for (var i = 0; i < 9; i++) {
+      final path = Path()
+        ..moveTo(size.width * (.02 + i * .018), size.height * (1.08 - i * .025))
+        ..cubicTo(size.width * .30, size.height * (.76 - i * .018), size.width * .72, size.height * (1.16 - i * .02), size.width * (1.08 - i * .012), size.height * (.28 + i * .04));
+      canvas.drawPath(path, Paint()..style = PaintingStyle.stroke..strokeWidth = i == 0 ? 1.8 : .7..color = const Color(0xFFFFC84A).withValues(alpha: i == 0 ? .52 : .12));
+    }
+  }
+  @override
+  bool shouldRepaint(covariant _ProxyGoldWavePainter oldDelegate) => false;
 }
