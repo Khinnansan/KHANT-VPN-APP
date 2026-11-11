@@ -590,18 +590,28 @@ class _Ctx {
 
     final k = r * .012;
 
+    // Custom italic, high-contrast K mark based on the approved KHANT
+    // reference: a strong slanted stem, sweeping upper arm and broad lower leg.
     final path = Path()
-      ..moveTo(center.dx - 20 * k, center.dy - 24 * k)
-      ..lineTo(center.dx - 8 * k, center.dy - 24 * k)
-      ..lineTo(center.dx - 8 * k, center.dy - 5 * k)
-      ..lineTo(center.dx + 17 * k, center.dy - 25 * k)
-      ..lineTo(center.dx + 33 * k, center.dy - 25 * k)
-      ..lineTo(center.dx + 4 * k, center.dy + 1 * k)
-      ..lineTo(center.dx + 32 * k, center.dy + 28 * k)
-      ..lineTo(center.dx + 17 * k, center.dy + 28 * k)
-      ..lineTo(center.dx - 8 * k, center.dy + 7 * k)
-      ..lineTo(center.dx - 8 * k, center.dy + 28 * k)
-      ..lineTo(center.dx - 20 * k, center.dy + 28 * k)
+      ..moveTo(center.dx - 17 * k, center.dy - 31 * k)
+      ..lineTo(center.dx - 3 * k, center.dy - 31 * k)
+      ..lineTo(center.dx - 8 * k, center.dy - 4 * k)
+      ..lineTo(center.dx + 23 * k, center.dy - 31 * k)
+      ..lineTo(center.dx + 42 * k, center.dy - 31 * k)
+      ..cubicTo(
+        center.dx + 29 * k, center.dy - 20 * k,
+        center.dx + 17 * k, center.dy - 9 * k,
+        center.dx + 4 * k, center.dy + 2 * k,
+      )
+      ..lineTo(center.dx + 34 * k, center.dy + 31 * k)
+      ..lineTo(center.dx + 15 * k, center.dy + 31 * k)
+      ..lineTo(center.dx - 11 * k, center.dy + 8 * k)
+      ..lineTo(center.dx - 15 * k, center.dy + 31 * k)
+      ..lineTo(center.dx - 29 * k, center.dy + 31 * k)
+      ..lineTo(center.dx - 24 * k, center.dy + 2 * k)
+      ..lineTo(center.dx - 43 * k, center.dy - 31 * k)
+      ..lineTo(center.dx - 25 * k, center.dy - 31 * k)
+      ..lineTo(center.dx - 12 * k, center.dy - 10 * k)
       ..close();
 
     // Small crown above the K, matching the KHANT premium mark.
@@ -648,17 +658,19 @@ class _Ctx {
     c.drawCircle(center.translate(0, -47 * k), 2.2 * k,
         Paint()..color = goldLight);
 
+    // Thin orbital brush-stroke crossing the lower half of the K,
+    // matching the distinctive gold swoosh in the supplied logo reference.
     final swoosh = Path()
-      ..moveTo(center.dx - 34 * k, center.dy + 19 * k)
+      ..moveTo(center.dx - 39 * k, center.dy + 23 * k)
       ..cubicTo(
-        center.dx - 5 * k, center.dy + 5 * k,
-        center.dx + 18 * k, center.dy + 10 * k,
-        center.dx + 37 * k, center.dy - 23 * k,
+        center.dx - 14 * k, center.dy + 5 * k,
+        center.dx + 16 * k, center.dy + 9 * k,
+        center.dx + 39 * k, center.dy - 25 * k,
       )
       ..cubicTo(
-        center.dx + 18 * k, center.dy + 4 * k,
-        center.dx - 12 * k, center.dy + 32 * k,
-        center.dx - 34 * k, center.dy + 19 * k,
+        center.dx + 23 * k, center.dy + 7 * k,
+        center.dx - 10 * k, center.dy + 35 * k,
+        center.dx - 39 * k, center.dy + 23 * k,
       );
     if (connected) {
       c.drawPath(
