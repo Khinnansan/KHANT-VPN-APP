@@ -151,6 +151,7 @@ class HomePage extends HookConsumerWidget {
                     activeProfile.valueOrNull as ProfileEntity?;
                 return ClipRect(
                   child: Center(
+                    alignment: Alignment.topCenter,
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.topCenter,
