@@ -170,6 +170,7 @@ flutter:
     - assets/images/disconnect_norouz.PNG
     - assets/images/world_map.png
     - assets/images/khant_vpn_icon.png
+    - assets/images/khant_splash.svg
     - assets/images/source/ic_launcher_border.png
 
   fonts:
@@ -190,11 +191,9 @@ flutter_gen:
 
 flutter_native_splash:
   color: "#000000"
-  image: assets/images/source/ic_launcher_splash.png
   android_gravity: center
   android_12:
     color: "#000000"
-    image: assets/images/source/ic_launcher_foreground.png
 
 ffigen:
   name: "HiddifyCoreNativeLibrary"
