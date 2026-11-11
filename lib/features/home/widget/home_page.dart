@@ -147,10 +147,8 @@ class HomePage extends HookConsumerWidget {
             LayoutBuilder(
               builder: (context, constraints) {
                 final contentWidth = constraints.maxWidth.clamp(0.0, 600.0);
-                final ProfileEntity? profile = switch (activeProfile) {
-                  AsyncData(value: final value?) => value,
-                  _ => null,
-                };
+                final ProfileEntity? profile =
+                    activeProfile.valueOrNull as ProfileEntity?;
                 return ClipRect(
                   child: Center(
                     child: FittedBox(
