@@ -171,6 +171,7 @@ flutter:
     - assets/images/world_map.png
     - assets/images/khant_vpn_icon.png
     - assets/images/khant_splash.svg
+    - assets/images/khant_splash_screen.png
     - assets/images/source/ic_launcher_border.png
 
   fonts:
