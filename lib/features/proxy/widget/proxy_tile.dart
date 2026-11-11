@@ -3,11 +3,13 @@ import 'package:hiddify/core/model/constants.dart';
 import 'package:hiddify/core/router/dialog/dialog_notifier.dart';
 import 'package:hiddify/features/proxy/active/ip_widget.dart';
 import 'package:hiddify/features/proxy/model/proxy_entity.dart';
-import 'package:hiddify/gen/fonts.gen.dart';
 import 'package:hiddify/hiddifycore/generated/v2/hcore/hcore.pb.dart';
 import 'package:hiddify/utils/custom_loggers.dart';
 import 'package:hiddify/utils/platform_utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+const _gold = Color(0xFFFFC84A);
+const _goldLight = Color(0xFFFFE3A0);
 
 class ProxyTile extends HookConsumerWidget with PresLogger {
   const ProxyTile(this.proxy, {super.key, required this.selected, required this.onTap});
@@ -18,81 +20,106 @@ class ProxyTile extends HookConsumerWidget with PresLogger {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
+    final delay = proxy.urlTestDelay;
+    final validDelay = ConnectionConst.isValidDelay(delay);
+    final delayColor = delay <= 0
+        ? Colors.white54
+        : delay < 180 ? Colors.greenAccent : delay < 450 ? Colors.lightGreen : delay < 800 ? Colors.orangeAccent : Colors.redAccent;
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 5),
       decoration: BoxDecoration(
-        color: selected ? const Color(0xFF2B2111) : const Color(0xFF15130F),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: selected ? const Color(0xFFFFC857) : const Color(0xFF6D572F).withValues(alpha: .35),
-        ),
-      ),
-      child: ListTile(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      title: Text(
-        proxy.nameWithDetour,
-        overflow: TextOverflow.ellipsis,
-        style: (PlatformUtils.isWindows ? const TextStyle(fontFamily: FontFamily.emoji) : const TextStyle()).copyWith(
-          color: selected ? const Color(0xFFFFE3A0) : Colors.white,
-          fontWeight: FontWeight.w700,
-        ),
-      ),
-      leading: IPCountryFlag(
-        countryCode: proxy.ipinfo.countryCode,
-        organization: proxy.ipinfo.org,
-        size: 40,
-        padding: const EdgeInsetsDirectional.only(end: 8),
-      ),
-      subtitle: Text.rich(
-        TextSpan(
-          text: proxy.type,
-          children: [
-            if (proxy.isGroup)
-              TextSpan(
-                text: ' (${proxy.groupSelectedTagDisplay.trim()})',
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-          ],
-        ),
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      ),
-      trailing: Column(
-        children: [
-          if (proxy.urlTestDelay != 0)
-            Text(
-              ConnectionConst.isValidDelay(proxy.urlTestDelay) ? '${proxy.urlTestDelay} ms' : "×",
-              style: TextStyle(color: delayColor(context, proxy.urlTestDelay), fontWeight: FontWeight.w800),
-            ),
-
-          if (proxy.download > 0) Text("⬩", style: Theme.of(context).textTheme.bodySmall),
+        color: selected ? const Color(0xFF241A08) : const Color(0xFF0C0B09),
+        borderRadius: BorderRadius.circular(23),
+        border: Border.all(color: selected ? _gold : _gold.withValues(alpha: .42), width: selected ? 1.7 : 1),
+        boxShadow: selected ? [
+          BoxShadow(color: _gold.withValues(alpha: .18), blurRadius: 18, spreadRadius: 1),
+          BoxShadow(color: Colors.black.withValues(alpha: .5), blurRadius: 10, offset: const Offset(0, 5)),
+        ] : [
+          BoxShadow(color: Colors.black.withValues(alpha: .35), blurRadius: 8, offset: const Offset(0, 4)),
         ],
       ),
-
-      selected: selected,
-      selectedTileColor: const Color(0xFF3A2B12),
-      onTap: onTap,
-      onLongPress: () async => await ref.read(dialogNotifierProvider.notifier).showProxyInfo(outboundInfo: proxy),
-      horizontalTitleGap: 4,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
-    ),
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(23),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(23),
+          onTap: onTap,
+          onLongPress: () async => await ref.read(dialogNotifierProvider.notifier).showProxyInfo(outboundInfo: proxy),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            child: Row(
+              children: [
+                IPCountryFlag(
+                  countryCode: proxy.ipinfo.countryCode,
+                  organization: proxy.ipinfo.org,
+                  size: 52,
+                  padding: const EdgeInsetsDirectional.only(end: 5),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        proxy.nameWithDetour,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: selected ? _goldLight : Colors.white,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: .2,
+                          fontFamily: PlatformUtils.isWindows ? 'Noto Color Emoji' : null,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text.rich(
+                        TextSpan(
+                          text: proxy.type,
+                          children: [
+                            if (proxy.isGroup)
+                              TextSpan(text: ' (${proxy.groupSelectedTagDisplay.trim()})'),
+                          ],
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(color: selected ? const Color(0xFFE5C77E) : Colors.white70, fontSize: 13.5),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      validDelay ? '$delay ms' : (delay == 0 ? '—' : 'Timeout'),
+                      style: TextStyle(color: delayColor, fontSize: 15, fontWeight: FontWeight.w900),
+                    ),
+                    const SizedBox(height: 5),
+                    selected
+                        ? const Icon(Icons.check_circle_rounded, color: _gold, size: 21)
+                        : Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: List.generate(4, (i) => Container(
+                              margin: const EdgeInsets.only(left: 2),
+                              width: 4,
+                              height: 6.0 + i * 3,
+                              decoration: BoxDecoration(color: delayColor.withValues(alpha: .9), borderRadius: BorderRadius.circular(3)),
+                            )),
+                          ),
+                  ],
+                ),
+                const SizedBox(width: 8),
+                Icon(selected ? Icons.chevron_right_rounded : Icons.chevron_right_rounded, color: _gold, size: 25),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
-  }
-
-  Color delayColor(BuildContext context, int delay) {
-    if (Theme.of(context).brightness == Brightness.dark) {
-      return switch (delay) {
-        < 800 => Colors.lightGreen,
-        < 1500 => Colors.orange,
-        _ => Colors.redAccent,
-      };
-    }
-    return switch (delay) {
-      < 800 => Colors.green,
-      < 1500 => Colors.deepOrangeAccent,
-      _ => Colors.red,
-    };
   }
 }
