@@ -710,8 +710,8 @@ class _Ctx {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            const Color(0xFFFFFFFF).withValues(alpha: opacity),
-            const Color(0xFFFFF4C2).withValues(alpha: opacity),
+            const Color(0xFFFFE7A0).withValues(alpha: opacity),
+            const Color(0xFFFFE6A0).withValues(alpha: opacity),
             const Color(0xFFFFD13D).withValues(alpha: opacity),
             const Color(0xFFE99A08).withValues(alpha: opacity),
             const Color(0xFFFFEAA0).withValues(alpha: opacity),
@@ -744,7 +744,7 @@ class _Ctx {
           [
             Colors.white.withValues(alpha: 0),
             const Color(0xFFFFF6D5).withValues(alpha: .08 * opacity),
-            const Color(0xFFFFFFFF).withValues(alpha: .42 * opacity),
+            const Color(0xFFFFD76A).withValues(alpha: .32 * opacity),
             const Color(0xFFFFE9A0).withValues(alpha: .12 * opacity),
             Colors.white.withValues(alpha: 0),
           ],
@@ -767,7 +767,7 @@ class _Ctx {
       Paint()
         ..style = PaintingStyle.stroke
         ..strokeWidth = k * .55
-        ..color = const Color(0xFFFFFFFF).withValues(alpha: .78 * opacity),
+        ..color = const Color(0xFFFFD76A).withValues(alpha: .9 * opacity),
     );
 
     c.restore();
