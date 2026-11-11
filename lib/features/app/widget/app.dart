@@ -225,7 +225,7 @@ class _KhantLaunchSplash extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ColoredBox(
+    return ColoredBox(
       color: Color(0xFF000000),
       child: Material(
         color: Color(0xFF000000),
