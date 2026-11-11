@@ -225,9 +225,11 @@ class _KhantLaunchSplash extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.black,
-      child: SafeArea(
+    return const ColoredBox(
+      color: Color(0xFF000000),
+      child: Material(
+        color: Color(0xFF000000),
+        child: SafeArea(
         child: Container(
           margin: const EdgeInsets.all(10),
           decoration: BoxDecoration(
@@ -287,6 +289,7 @@ class _KhantLaunchSplash extends StatelessWidget {
                 ],
               );
             },
+          ),
           ),
         ),
       ),
