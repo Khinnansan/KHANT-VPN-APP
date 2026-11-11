@@ -1,4 +1,3 @@
-
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -150,7 +149,7 @@ class HomePage extends HookConsumerWidget {
                 final ProfileEntity? profile =
                     activeProfile.valueOrNull as ProfileEntity?;
                 return ClipRect(
-                  child: Center(
+                  child: Align(
                     alignment: Alignment.topCenter,
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
@@ -311,4 +310,3 @@ class AppVersionLabel extends HookConsumerWidget {
     );
   }
 }
-
